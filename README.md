@@ -5,6 +5,8 @@
 
 ### Set up
 
-- `git clone`
+- Create an `.env` file with all the keys needed inside `./config/index.ts`
+- You should use a Postgres database
+- `git clone git@github.com:skyhitz/api.git`
 - `yarn`
-- `yarn start:graphiql`
+- `yarn dev`
