@@ -6,7 +6,6 @@ export interface EntryAttribute {
   videoUrl: string;
   description: string;
   likeCount: number;
-  publishedAt: string;
   title: string;
   id: string;
   viewCount: number;
@@ -39,10 +38,6 @@ export const EntryType = {
   },
   likeCount: {
     type: Sequelize.INTEGER,
-    allowNull: false
-  },
-  publishedAt: {
-    type: Sequelize.STRING,
     allowNull: false
   },
   title: {
