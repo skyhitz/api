@@ -40,7 +40,7 @@ const createEntry = {
     };
 
     let createdEntry = await Database.models.entry.create(entry);
-    createdEntry.addEntryOwner(user.id);
+    await createdEntry.addEntryOwner(user.id);
   }
 };
 

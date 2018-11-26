@@ -92,6 +92,7 @@ const PlaylistEntry = Database.define<
 Entry.belongsToMany(User, { as: 'EntryLike', through: EntryLike });
 User.belongsToMany(Entry, { as: 'EntryLike', through: EntryLike });
 Entry.belongsToMany(User, { as: 'EntryOwner', through: EntryOwner });
+User.belongsToMany(Entry, { as: 'EntryOwner', through: EntryOwner });
 
 Playlist.belongsToMany(User, { as: 'Collaborators', through: UserPlaylist });
 User.belongsToMany(Playlist, { as: 'UserPlaylists', through: UserPlaylist });
