@@ -3,7 +3,7 @@ jobs:
   build:
     environment:
       - PROJECT_ID: skyhitz-161021
-      - REPOSITORY_ID: api
+      - REPOSITORY_ID: github_alejomendoza_api
     docker:
       - image: google/cloud-sdk:latest
     steps:
