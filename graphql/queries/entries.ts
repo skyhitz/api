@@ -17,9 +17,12 @@ const Entries = {
     }
   },
   async resolve(root: any, args: any, ctx: any) {
-    await getAuthenticatedUser(ctx);
+    let user = await getAuthenticatedUser(ctx);
     if (args.search) {
       return;
+    }
+    if (args.userId) {
+      return user.getEntryOwner({ limit: 500, offset: 0 });
     }
     return Database.models.entry.findAll({ where: args });
   }
