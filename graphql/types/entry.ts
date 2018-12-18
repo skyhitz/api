@@ -52,13 +52,13 @@ const Entry: GraphQLObjectType = new GraphQLObjectType({
       userDisplayName: {
         type: GraphQLString,
         resolve(entry: any) {
-          return entry.getUser().displayName;
+          return entry.getEntryOwner()[0].displayName;
         }
       },
       user: {
         type: User,
         resolve(entry: any) {
-          return entry.getUser();
+          return entry.getEntryOwner()[0];
         }
       }
     };
