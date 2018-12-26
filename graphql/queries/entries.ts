@@ -11,16 +11,10 @@ const Entries = {
     },
     userId: {
       type: GraphQLString
-    },
-    search: {
-      type: GraphQLString
     }
   },
   async resolve(root: any, args: any, ctx: any) {
     let user = await getAuthenticatedUser(ctx);
-    if (args.search) {
-      return;
-    }
     if (args.userId) {
       return user.getEntryOwner({ limit: 500, offset: 0 });
     }
