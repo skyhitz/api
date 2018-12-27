@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLFloat, GraphQLString } from 'graphql';
+import { GraphQLObjectType, GraphQLString } from 'graphql';
 
 import User from './user';
 
