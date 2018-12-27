@@ -1,4 +1,4 @@
-import * as algoliasearch from 'algoliasearch';
+const algoliasearch = require('algoliasearch');
 import { Config } from '../config/index';
 const client = algoliasearch(
   Config.ALGOLIA_APP_ID,
