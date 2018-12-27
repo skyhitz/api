@@ -37,18 +37,6 @@ const Entry: GraphQLObjectType = new GraphQLObjectType({
           return entry.id;
         }
       },
-      viewCount: {
-        type: GraphQLFloat,
-        resolve(entry: any) {
-          return entry.viewCount;
-        }
-      },
-      points: {
-        type: GraphQLFloat,
-        resolve(entry: any) {
-          return entry.points;
-        }
-      },
       userDisplayName: {
         type: GraphQLString,
         async resolve(entry: any) {

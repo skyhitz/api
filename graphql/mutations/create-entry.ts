@@ -34,13 +34,12 @@ const createEntry = {
       imageUrl: imageUrl,
       description: description,
       title: title,
-      viewCount: 0,
-      videoUrl: videoUrl,
-      likeCount: 0,
-      points: 0
+      videoUrl: videoUrl
     };
 
     let createdEntry = await Database.models.entry.create(entry);
+    let entryIndex: any = entry;
+    entryIndex.userDisplayName = user.displayName;
     [await createdEntry.addEntryOwner(user.id), await index.addObject(entry)];
   }
 };

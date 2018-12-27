@@ -5,11 +5,8 @@ export interface EntryAttribute {
   etag: string;
   videoUrl: string;
   description: string;
-  likeCount: number;
   title: string;
   id: string;
-  viewCount: number;
-  points: number;
 }
 
 export interface EntryInstance
@@ -36,10 +33,6 @@ export const EntryType = {
     type: Sequelize.TEXT,
     allowNull: false
   },
-  likeCount: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  },
   title: {
     type: Sequelize.STRING,
     allowNull: false
@@ -49,13 +42,5 @@ export const EntryType = {
     allowNull: false,
     unique: true,
     primaryKey: true
-  },
-  viewCount: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  },
-  points: {
-    type: Sequelize.INTEGER,
-    allowNull: false
   }
 };
