@@ -6,7 +6,8 @@ const TopEntrySearches = {
   type: new GraphQLList(Entry),
   async resolve(root: any, args: any, ctx: any) {
     await getAuthenticatedUser(ctx);
-    return [];
+    const entries: any[] = [];
+    return entries;
   }
 };
 
