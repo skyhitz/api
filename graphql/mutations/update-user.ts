@@ -1,6 +1,7 @@
 import { GraphQLString } from 'graphql';
 import User from '../types/user';
 import { getAuthenticatedUser } from '../../auth/logic';
+import { usersIndex } from '../../algolia/algolia';
 
 const updateUser = {
   type: User,
@@ -24,7 +25,11 @@ const updateUser = {
       type: GraphQLString
     }
   },
-  async resolve(_: any, { avatarUrl, displayName, description, username, email, phone }: any, ctx: any) {
+  async resolve(
+    _: any,
+    { avatarUrl, displayName, description, username, email, phone }: any,
+    ctx: any
+  ) {
     let user = await getAuthenticatedUser(ctx);
     if (user.avatarUrl === 'null') {
       user.avatarUrl = null;
@@ -37,6 +42,19 @@ const updateUser = {
     user.email = email;
     user.phone = phone;
     await user.save();
+
+    let userIndexObject: any = {
+      avatarUrl: user.avatarUrl,
+      displayName: user.displayName,
+      description: user.description,
+      reputation: user.reputation,
+      username: user.username,
+      id: user.id,
+      userType: user.userType,
+      publishedAt: user.publishedAt,
+      objectID: user.id
+    };
+    await usersIndex.partialUpdateObject(userIndexObject);
     return user;
   }
 };

@@ -3,7 +3,7 @@ import Database from '../../database';
 import Entry from '../types/entry';
 import { getAuthenticatedUser } from '../../auth/logic';
 import UniqueIdGenerator from '../../auth/unique-id-generator';
-import { index } from '../../algolia/algolia';
+import { entriesIndex } from '../../algolia/algolia';
 
 const createEntry = {
   type: Entry,
@@ -40,7 +40,11 @@ const createEntry = {
     let createdEntry = await Database.models.entry.create(entry);
     let entryIndex: any = entry;
     entryIndex.userDisplayName = user.displayName;
-    [await createdEntry.addEntryOwner(user.id), await index.addObject(entry)];
+    entryIndex.objectID = id;
+    [
+      await createdEntry.addEntryOwner(user.id),
+      await entriesIndex.addObject(entry)
+    ];
   }
 };
 

@@ -5,6 +5,7 @@ import User from '../types/user';
 import * as jwt from 'jsonwebtoken';
 import { Config } from '../../config';
 import UniqueIdGenerator from '../../auth/unique-id-generator';
+import { usersIndex } from '../../algolia/algolia';
 
 const ConfirmUsernameAndEmail = {
   type: User,
@@ -27,24 +28,25 @@ const ConfirmUsernameAndEmail = {
 
     if (facebookProfile) {
       let user;
+      let userPayload: any = {
+        avatarUrl: `https://res.cloudinary.com/skyhitz/image/facebook/${
+          facebookProfile.id
+        }.jpg`,
+        displayName: facebookProfile.name,
+        description: null,
+        email: email,
+        facebookId: facebookProfile.id,
+        reputation: 0,
+        password: null,
+        username: username,
+        id: UniqueIdGenerator.generate(),
+        userType: 1,
+        version: 1,
+        publishedAt: new Date().toISOString(),
+        phone: null
+      };
       try {
-        user = await Database.models.user.create({
-          avatarUrl: `https://res.cloudinary.com/skyhitz/image/facebook/${
-            facebookProfile.id
-          }.jpg`,
-          displayName: facebookProfile.name,
-          description: null,
-          email: email,
-          facebookId: facebookProfile.id,
-          reputation: 0,
-          password: null,
-          username: username,
-          id: UniqueIdGenerator.generate(),
-          userType: 1,
-          version: 1,
-          publishedAt: new Date().toISOString(),
-          phone: null
-        });
+        user = await Database.models.user.create(userPayload);
       } catch (e) {
         console.log(e);
         if (
@@ -69,6 +71,19 @@ const ConfirmUsernameAndEmail = {
       const token = jwt.sign({ id, email, version } as any, Config.JWT_SECRET);
       user.jwt = token;
       ctx.user = Promise.resolve(user);
+
+      let userIndexObject: any = {
+        avatarUrl: userPayload.avatarUrl,
+        displayName: userPayload.displayName,
+        description: null,
+        reputation: 0,
+        username: userPayload.username,
+        id: userPayload.id,
+        userType: userPayload.userType,
+        publishedAt: userPayload.publishedAt,
+        objectID: userPayload.id
+      };
+      await usersIndex.partialUpdateObject(userIndexObject);
       return user;
     }
 

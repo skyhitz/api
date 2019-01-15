@@ -6,6 +6,7 @@ import UniqueIdGenerator from '../../auth/unique-id-generator';
 import { generateHash } from '../../auth/bycrypt';
 import * as jwt from 'jsonwebtoken';
 import { Config } from '../../config';
+import { usersIndex } from '../../algolia/algolia';
 
 const createUserWithEmail = {
   type: User,
@@ -25,7 +26,7 @@ const createUserWithEmail = {
   },
   async resolve(_: any, args: any, ctx: any) {
     let passwordHash = await generateHash(args.password);
-    let user = await Database.models.user.create({
+    let userPayload: any = {
       avatarUrl: null,
       displayName: args.displayName,
       description: null,
@@ -38,11 +39,25 @@ const createUserWithEmail = {
       version: 1,
       publishedAt: new Date().toISOString(),
       phone: null
-    });
+    };
+    let user = await Database.models.user.create(userPayload);
     const { id, email, version } = user;
     const token = jwt.sign({ id, email, version } as any, Config.JWT_SECRET);
     user.jwt = token;
     ctx.user = Promise.resolve(user);
+    let userIndexObject: any = {
+      avatarUrl: null,
+      displayName: userPayload.displayName,
+      description: null,
+      reputation: 0,
+      username: userPayload.username,
+      id: userPayload.id,
+      userType: userPayload.userType,
+      publishedAt: userPayload.publishedAt,
+      objectID: userPayload.id
+    };
+    await usersIndex.addObject(userIndexObject);
+
     return user;
   }
 };
