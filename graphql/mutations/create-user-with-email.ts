@@ -38,7 +38,8 @@ const createUserWithEmail = {
       userType: 1,
       version: 1,
       publishedAt: new Date().toISOString(),
-      phone: null
+      phone: null,
+      testing: Config.ENV === 'production' ? false : true
     };
     let user = await Database.models.user.create(userPayload);
     const { id, email, version } = user;
@@ -54,7 +55,8 @@ const createUserWithEmail = {
       id: userPayload.id,
       userType: userPayload.userType,
       publishedAt: userPayload.publishedAt,
-      objectID: userPayload.id
+      objectID: userPayload.id,
+      testing: userPayload.testing
     };
     await usersIndex.addObject(userIndexObject);
 

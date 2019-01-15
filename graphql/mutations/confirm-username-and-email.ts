@@ -43,7 +43,8 @@ const ConfirmUsernameAndEmail = {
         userType: 1,
         version: 1,
         publishedAt: new Date().toISOString(),
-        phone: null
+        phone: null,
+        testing: Config.ENV === 'production' ? false : true
       };
       try {
         user = await Database.models.user.create(userPayload);
@@ -81,7 +82,8 @@ const ConfirmUsernameAndEmail = {
         id: userPayload.id,
         userType: userPayload.userType,
         publishedAt: userPayload.publishedAt,
-        objectID: userPayload.id
+        objectID: userPayload.id,
+        testing: userPayload.testing
       };
       await usersIndex.partialUpdateObject(userIndexObject);
       return user;
