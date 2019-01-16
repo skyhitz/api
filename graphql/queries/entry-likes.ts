@@ -19,14 +19,18 @@ const entryLikes = {
   async resolve(_: any, { limit, offset, id }: any, ctx: any) {
     await getAuthenticatedUser(ctx);
     let entry = await Database.models.entry.findAndCountAll({
-      include: [
-        { model: Database.models.user, as: 'EntryLike' }
-      ],
-      where: { id: id },
+      include: [{ model: Database.models.user, as: 'EntryLike' }],
+      where: { id: id }
     });
+    if (!entry) {
+      return {
+        count: 0,
+        users: []
+      };
+    }
     return {
       count: entry.count,
-      users: entry.rows[0].getEntryLike({limit: limit, offset: offset})
+      users: entry.rows[0].getEntryLike({ limit: limit, offset: offset })
     };
   }
 };
