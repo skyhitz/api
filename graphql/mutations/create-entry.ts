@@ -34,7 +34,8 @@ const createEntry = {
       imageUrl: imageUrl,
       description: description,
       title: title,
-      videoUrl: videoUrl
+      videoUrl: videoUrl,
+      publishedAtTimestamp: Math.floor(new Date().getTime() / 1000)
     };
 
     let createdEntry = await Database.models.entry.create(entry);

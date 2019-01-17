@@ -7,6 +7,7 @@ export interface UserAttribute {
   email: string;
   reputation: number;
   publishedAt: string;
+  publishedAtTimestamp: number;
   username: string;
   id: string;
   password: string;
@@ -48,6 +49,9 @@ export const UserType = {
   },
   publishedAt: {
     type: Sequelize.STRING
+  },
+  publishedAtTimestamp: {
+    type: Sequelize.INTEGER
   },
   facebookId: {
     type: Sequelize.STRING
