@@ -8,6 +8,7 @@ export interface EntryAttribute {
   title: string;
   id: string;
   publishedAtTimestamp: number;
+  publishedAt: string;
 }
 
 export interface EntryInstance
@@ -46,6 +47,10 @@ export const EntryType = {
   },
   publishedAtTimestamp: {
     type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  publishedAt: {
+    type: Sequelize.STRING,
     allowNull: false
   }
 };

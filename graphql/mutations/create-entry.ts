@@ -35,6 +35,7 @@ const createEntry = {
       description: description,
       title: title,
       videoUrl: videoUrl,
+      publishedAt: new Date().toISOString(),
       publishedAtTimestamp: Math.floor(new Date().getTime() / 1000)
     };
 
