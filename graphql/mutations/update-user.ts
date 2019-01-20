@@ -52,6 +52,7 @@ const updateUser = {
       id: user.id,
       userType: user.userType,
       publishedAt: user.publishedAt,
+      publishedAtTimestamp: user.publishedAtTimestamp,
       objectID: user.id
     };
     await usersIndex.partialUpdateObject(userIndexObject);

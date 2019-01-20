@@ -43,6 +43,7 @@ const ConfirmUsernameAndEmail = {
         userType: 1,
         version: 1,
         publishedAt: new Date().toISOString(),
+        publishedAtTimestamp: Math.floor(new Date().getTime() / 1000),
         phone: null,
         testing: Config.ENV === 'production' ? false : true
       };
@@ -82,6 +83,7 @@ const ConfirmUsernameAndEmail = {
         id: userPayload.id,
         userType: userPayload.userType,
         publishedAt: userPayload.publishedAt,
+        publishedAtTimestamp: userPayload.publishedAtTimestamp,
         objectID: userPayload.id,
         testing: userPayload.testing
       };
