@@ -10,7 +10,13 @@ const RecentUserSearches = {
     let { recentUserSearches } = await Database.models.search.findOne({
       where: { userId: user.id }
     });
-    return await Database.models.user.findAll({ limit: 25, where: { id: recentUserSearches } });
+    if (!recentUserSearches) {
+      return [];
+    }
+    return await Database.models.user.findAll({
+      limit: 25,
+      where: { id: recentUserSearches }
+    });
   }
 };
 
