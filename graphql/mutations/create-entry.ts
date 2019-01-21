@@ -43,6 +43,7 @@ const createEntry = {
     let entryIndex: any = entry;
     entryIndex.userDisplayName = user.displayName;
     entryIndex.objectID = id;
+    entryIndex.testing = user.testing;
     [
       await createdEntry.addEntryOwner(user.id),
       await entriesIndex.addObject(entry)
