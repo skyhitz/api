@@ -11,7 +11,7 @@ const RecentEntrySearches = {
       where: { userId: user.id }
     });
 
-    if (!response && !response.recentEntrySearches) {
+    if (!response) {
       return [];
     }
 
