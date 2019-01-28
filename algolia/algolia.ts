@@ -5,4 +5,7 @@ const client = algoliasearch(
   Config.ALGOLIA_ADMIN_API_KEY
 );
 export const entriesIndex = client.initIndex('entries');
+entriesIndex.setSettings({
+  searchableAttributes: ['title,userDisplayName', 'description']
+});
 export const usersIndex = client.initIndex('users');
