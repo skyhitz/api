@@ -42,6 +42,7 @@ const createEntry = {
     let createdEntry = await Database.models.entry.create(entry);
     let entryIndex: any = entry;
     entryIndex.userDisplayName = user.displayName;
+    entryIndex.userUsername = user.username;
     entryIndex.objectID = id;
     entryIndex.testing = user.testing;
     [

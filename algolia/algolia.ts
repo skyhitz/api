@@ -6,6 +6,6 @@ const client = algoliasearch(
 );
 export const entriesIndex = client.initIndex('entries');
 entriesIndex.setSettings({
-  searchableAttributes: ['title,userDisplayName', 'description']
+  searchableAttributes: ['title,userDisplayName', 'description', 'userUsername']
 });
 export const usersIndex = client.initIndex('users');
