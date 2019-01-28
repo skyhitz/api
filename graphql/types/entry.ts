@@ -47,6 +47,16 @@ const Entry: GraphQLObjectType = new GraphQLObjectType({
           return '';
         }
       },
+      userUsername: {
+        type: GraphQLString,
+        async resolve(entry: any) {
+          let owner = await entry.getEntryOwner();
+          if (owner && owner[0]) {
+            return owner[0].username;
+          }
+          return '';
+        }
+      },
       user: {
         type: User,
         async resolve(entry: any) {
