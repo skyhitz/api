@@ -14,6 +14,7 @@ import UpdatePlaylist from './update-playlist';
 import RemovePlaylist from './remove-playlist';
 import SubscribeUser from './subscribe-user';
 import CancelSubscription from './cancel-subscription';
+import RemoveEntry from './remove-entry';
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -34,7 +35,8 @@ const Mutation = new GraphQLObjectType({
       updatePlaylist: UpdatePlaylist,
       removePlaylist: RemovePlaylist,
       subscribeUser: SubscribeUser,
-      cancelSubscription: CancelSubscription
+      cancelSubscription: CancelSubscription,
+      removeEntry: RemoveEntry
     };
   }
 });

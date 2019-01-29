@@ -8,6 +8,8 @@ export const Config: IConfig = {
   API_ENDPOINT: process.env.API_ENDPOINT || '',
   ALGOLIA_APP_ID: process.env.ALGOLIA_APP_ID || '',
   ALGOLIA_ADMIN_API_KEY: process.env.ALGOLIA_ADMIN_API_KEY || '',
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY || '',
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET || '',
   DATA_BACKEND: process.env.DATA_BACKEND || '',
   DATABASE: process.env.DATABASE || '',
   ENV: process.env.ENV || '',

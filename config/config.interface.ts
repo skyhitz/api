@@ -2,6 +2,8 @@ export interface IConfig {
   API_ENDPOINT: string;
   ALGOLIA_APP_ID: string;
   ALGOLIA_ADMIN_API_KEY: string;
+  CLOUDINARY_API_KEY: string;
+  CLOUDINARY_API_SECRET: string;
   DATA_BACKEND: string;
   DATABASE: string;
   ENV: string;
