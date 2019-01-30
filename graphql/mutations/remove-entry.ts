@@ -9,16 +9,19 @@ const removeEntry = {
   args: {
     id: {
       type: new GraphQLNonNull(GraphQLString)
+    },
+    cloudinaryPublicId: {
+      type: new GraphQLNonNull(GraphQLString)
     }
   },
-  async resolve(_: any, { id }: any, ctx: any) {
+  async resolve(_: any, { id, cloudinaryPublicId }: any, ctx: any) {
     await getAuthenticatedUser(ctx);
     [
       await Database.models.entry.destroy({
         where: { id: id }
       }),
       await entriesIndex.deleteObject(id),
-      await cloudinary.v2.api.delete_resources([id])
+      await cloudinary.v2.api.delete_resources([cloudinaryPublicId])
     ];
     return true;
   }
