@@ -9,7 +9,6 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "allowJs": true,
-    "types": ["node"],
     "typeRoots": ["./node_modules/@types/**/*.d.ts"],
     "baseUrl": "./"
   }
