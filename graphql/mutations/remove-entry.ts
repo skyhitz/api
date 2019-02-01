@@ -20,9 +20,15 @@ const removeEntry = {
       await Database.models.entry.destroy({
         where: { id: id }
       }),
-      await entriesIndex.deleteObject(id),
-      await cloudinary.v2.api.delete_resources([cloudinaryPublicId])
+      await entriesIndex.deleteObject(id)
     ];
+    cloudinary.v2.api.delete_resources(
+      [cloudinaryPublicId],
+      (err: any, res: any) => {
+        console.log('error', err);
+        console.log('response', res);
+      }
+    );
     return true;
   }
 };
