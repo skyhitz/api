@@ -24,6 +24,7 @@ const removeEntry = {
     ];
     cloudinary.v2.api.delete_resources(
       [cloudinaryPublicId],
+      { resource_type: 'video' },
       (err: any, res: any) => {
         console.log('error', err);
         console.log('response', res);
