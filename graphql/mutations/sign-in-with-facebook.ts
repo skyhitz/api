@@ -42,6 +42,7 @@ const SignInWithFacebook = {
   async resolve(_: any, { token, testing }: any, ctx: any) {
     const facebookProfile = await getFacebookProfile(token);
     const user = await getUserWithFacebookId(facebookProfile.id, testing);
+    console.log(user);
     if (user) {
       const jwtToken = jwt.sign(
         {
