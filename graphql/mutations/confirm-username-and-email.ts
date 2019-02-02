@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
 import Database from '../../database';
 import User from '../types/user';
 import * as jwt from 'jsonwebtoken';
@@ -18,9 +18,12 @@ const ConfirmUsernameAndEmail = {
     },
     token: {
       type: new GraphQLNonNull(GraphQLString)
+    },
+    testing: {
+      type: new GraphQLNonNull(GraphQLBoolean)
     }
   },
-  async resolve(_: any, { username, email, token }: any, ctx: any) {
+  async resolve(_: any, { username, email, token, testing }: any, ctx: any) {
     const response = await fetch(
       `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email`
     );
@@ -45,7 +48,7 @@ const ConfirmUsernameAndEmail = {
         publishedAt: new Date().toISOString(),
         publishedAtTimestamp: Math.floor(new Date().getTime() / 1000),
         phone: null,
-        testing: Config.ENV === 'production' ? false : true
+        testing: testing ? true : false
       };
       try {
         user = await Database.models.user.create(userPayload);

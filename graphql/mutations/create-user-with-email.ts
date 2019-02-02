@@ -1,4 +1,4 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
 
 import Database from '../../database';
 import User from '../types/user';
@@ -22,6 +22,9 @@ const createUserWithEmail = {
     },
     password: {
       type: new GraphQLNonNull(GraphQLString)
+    },
+    testing: {
+      type: new GraphQLNonNull(GraphQLBoolean)
     }
   },
   async resolve(_: any, args: any, ctx: any) {
@@ -40,7 +43,7 @@ const createUserWithEmail = {
       publishedAt: new Date().toISOString(),
       publishedAtTimestamp: Math.floor(new Date().getTime() / 1000),
       phone: null,
-      testing: Config.ENV === 'production' ? false : true
+      testing: args.testing ? true : false
     };
     let user = await Database.models.user.create(userPayload);
     const { id, email, version } = user;
