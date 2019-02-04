@@ -15,6 +15,7 @@ import RemovePlaylist from './remove-playlist';
 import SubscribeUser from './subscribe-user';
 import CancelSubscription from './cancel-subscription';
 import RemoveEntry from './remove-entry';
+import UpdateAlgoliaEntriesWithUser from './update-algolia-entries-with-user';
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -36,7 +37,8 @@ const Mutation = new GraphQLObjectType({
       removePlaylist: RemovePlaylist,
       subscribeUser: SubscribeUser,
       cancelSubscription: CancelSubscription,
-      removeEntry: RemoveEntry
+      removeEntry: RemoveEntry,
+      updateAlgoliaEntriesWithUser: UpdateAlgoliaEntriesWithUser
     };
   }
 });
