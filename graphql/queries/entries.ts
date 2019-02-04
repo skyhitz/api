@@ -15,7 +15,7 @@ const Entries = {
   },
   async resolve(root: any, args: any, ctx: any) {
     let user = await getAuthenticatedUser(ctx);
-    if (args.userId) {
+    if (args.userId === user.id) {
       return user.getEntryOwner({ limit: 500, offset: 0 });
     }
     return Database.models.entry.findAll({ where: args });
