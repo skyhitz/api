@@ -41,8 +41,6 @@ const updateUser = {
     user.username = username;
     user.email = email;
     user.phone = phone;
-    await user.save();
-
     let userIndexObject: any = {
       avatarUrl: user.avatarUrl,
       displayName: user.displayName,
@@ -55,7 +53,7 @@ const updateUser = {
       publishedAtTimestamp: user.publishedAtTimestamp,
       objectID: user.id
     };
-    await usersIndex.partialUpdateObject(userIndexObject);
+    [await user.save(), await usersIndex.partialUpdateObject(userIndexObject)];
     return user;
   }
 };
