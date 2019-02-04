@@ -24,7 +24,10 @@ const Entries = {
     let profileUser = await Database.models.user.findOne({
       where: { id: args.userId }
     });
-    return profileUser.getEntryOwner({ limit: 500, offset: 0 });
+    if (profileUser) {
+      return profileUser.getEntryOwner({ limit: 500, offset: 0 });
+    }
+    return [];
   }
 };
 
