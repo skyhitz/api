@@ -1,4 +1,4 @@
-import { AlgoliaEntry } from '../models/algolia-entry';
+import { AlgoliaEntry, AlgoliaUser } from '../models/algolia-entry';
 
 export function entriesToAlgoliaEntries(
   entries: any[],
@@ -20,5 +20,24 @@ export function entriesToAlgoliaEntries(
       testing: user.testing
     };
     return algoliaEntry;
+  });
+}
+
+export function usersToAlgoliaUsers(users: any[]): AlgoliaUser[] {
+  return users.map(user => {
+    let algoliaUsers: AlgoliaUser = {
+      avatarUrl: user.avatarUrl,
+      displayName: user.displayName,
+      description: user.description,
+      reputation: user.reputation,
+      username: user.username,
+      id: user.id,
+      userType: user.userType,
+      publishedAt: user.publishedAt,
+      publishedAtTimestamp: user.publishedAtTimestamp,
+      objectID: user.id,
+      testing: user.testing
+    };
+    return algoliaUsers;
   });
 }

@@ -16,6 +16,7 @@ import SubscribeUser from './subscribe-user';
 import CancelSubscription from './cancel-subscription';
 import RemoveEntry from './remove-entry';
 import UpdateAlgoliaEntriesWithUser from './update-algolia-entries-with-user';
+import SyncAlgoliaUsers from './sync-algolia-users';
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -38,7 +39,8 @@ const Mutation = new GraphQLObjectType({
       subscribeUser: SubscribeUser,
       cancelSubscription: CancelSubscription,
       removeEntry: RemoveEntry,
-      updateAlgoliaEntriesWithUser: UpdateAlgoliaEntriesWithUser
+      updateAlgoliaEntriesWithUser: UpdateAlgoliaEntriesWithUser,
+      syncAlgoliaUsers: SyncAlgoliaUsers
     };
   }
 });
