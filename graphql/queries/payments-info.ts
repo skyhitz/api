@@ -11,6 +11,7 @@ const PaymentsInfo = {
     } catch (e) {
       return false;
     }
+
     let customer = await findCustomer(user.email);
     return !!customer;
   }
