@@ -15,7 +15,7 @@ export interface IConfig {
   SENDGRID_API_KEY: string;
   UNIVERSAL_LINK_SCHEME: string;
   HORIZON_URL: string;
-  STRIPE_SECTRET_KEY: string;
+  STRIPE_SECRET_KEY: string;
   STRIPE_CONNECT_CLIENT_ID: string;
   STRIPE_PLAN_ID: string;
   ISSUER_ID: string;

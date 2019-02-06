@@ -1,7 +1,7 @@
 import * as Stripe from 'stripe';
 import { CustomerPayload, UpdateCustomerPayload } from './types';
 import { Config } from '../config';
-export const stripe = new Stripe(Config.STRIPE_SECTRET_KEY);
+export const stripe = new Stripe(Config.STRIPE_SECRET_KEY);
 
 export async function updateCustomer({
   customerId,

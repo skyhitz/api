@@ -21,7 +21,7 @@ export const Config: IConfig = {
   SENDGRID_API_KEY: process.env.SENDGRID_API_KEY || '',
   UNIVERSAL_LINK_SCHEME: process.env.UNIVERSAL_LINK_SCHEME || '',
   HORIZON_URL: process.env.HORIZON_URL || '',
-  STRIPE_SECTRET_KEY: process.env.STRIPE_SECTRET_KEY || '',
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || '',
   STRIPE_CONNECT_CLIENT_ID: process.env.STRIPE_CONNECT_CLIENT_ID || '',
   STRIPE_PLAN_ID: process.env.STRIPE_PLAN_ID || '',
   ISSUER_ID: process.env.ISSUER_ID || '',
