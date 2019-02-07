@@ -40,6 +40,9 @@ const SignInWithFacebook = {
     }
   },
   async resolve(_: any, { token, testing }: any, ctx: any) {
+    if (!token) {
+      throw 'did not send any token';
+    }
     const facebookProfile = await getFacebookProfile(token);
     console.log('facebook profile', facebookProfile);
     const user = await getUserWithFacebookId(facebookProfile.id, testing);
