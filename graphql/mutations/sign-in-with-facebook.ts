@@ -44,9 +44,7 @@ const SignInWithFacebook = {
       throw 'did not send any token';
     }
     const facebookProfile = await getFacebookProfile(token);
-    console.log('facebook profile', facebookProfile);
     const user = await getUserWithFacebookId(facebookProfile.id, testing);
-    console.log(user);
     if (user) {
       const jwtToken = jwt.sign(
         {
