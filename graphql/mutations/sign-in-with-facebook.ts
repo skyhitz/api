@@ -41,6 +41,7 @@ const SignInWithFacebook = {
   },
   async resolve(_: any, { token, testing }: any, ctx: any) {
     const facebookProfile = await getFacebookProfile(token);
+    console.log('facebook profile', facebookProfile);
     const user = await getUserWithFacebookId(facebookProfile.id, testing);
     console.log(user);
     if (user) {
