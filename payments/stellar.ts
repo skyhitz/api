@@ -48,6 +48,7 @@ export async function fundAccount(destinationKey: string) {
 }
 
 export async function createAndFundTestStellarAccount() {
+  console.log('creating and funding stellar test account');
   let pair = StellarSdk.Keypair.random();
   let secret = pair.secret();
   let publicAddress = pair.publicKey();
@@ -109,7 +110,7 @@ export async function sendSubscriptionTokens(
     .addOperation(
       StellarSdk.Operation.payment({
         destination: destinationKey,
-        asset: asset,
+        asset: StellarSdk.Asset.native(),
         amount: amount.toString()
       })
     )
