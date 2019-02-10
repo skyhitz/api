@@ -12,7 +12,7 @@ export const stellarServer = new StellarSdkLibrary.Server(Config.HORIZON_URL);
 export const StellarSdk = StellarSdkLibrary;
 let sourceKeys = StellarSdk.Keypair.fromSecret(Config.ISSUER_SEED);
 
-const ASSET_CODE = 'SKY';
+const ASSET_CODE = 'SKYHITZ';
 const asset = new StellarSdk.Asset(ASSET_CODE, sourceKeys.publicKey());
 
 export async function fundTestAccount(publicKey: string) {
@@ -92,7 +92,7 @@ export async function allowTrust(destinationSeed: string) {
     .addOperation(
       StellarSdk.Operation.changeTrust({
         asset,
-        limit: '3600'
+        limit: '10000000'
       })
     )
     .build();
@@ -110,7 +110,7 @@ export async function sendSubscriptionTokens(
     .addOperation(
       StellarSdk.Operation.payment({
         destination: destinationKey,
-        asset: StellarSdk.Asset.native(),
+        asset,
         amount: amount.toString()
       })
     )
