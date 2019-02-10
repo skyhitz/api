@@ -7,7 +7,8 @@ import {
 import {
   createAndFundAccount,
   mergeAccount,
-  sendSubscriptionTokens
+  sendSubscriptionTokens,
+  allowTrust
 } from './stellar';
 
 export async function subscribe(customer: CustomerPayload) {
@@ -26,13 +27,13 @@ export async function subscribe(customer: CustomerPayload) {
     throw e;
   }
 
-  // try {
-  //   await allowTrust(keyPair.secret);
-  //   console.log('allowed trust');
-  // } catch (e) {
-  //   console.error(e);
-  //   throw e;
-  // }
+  try {
+    await allowTrust(keyPair.secret);
+    console.log('allowed trust');
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 
   try {
     await updateCustomer({
@@ -40,14 +41,17 @@ export async function subscribe(customer: CustomerPayload) {
       publicAddress: keyPair.publicAddress,
       seed: keyPair.secret
     });
+    console.log('updated stripe customer with stellar info');
   } catch (e) {
     console.error(e);
     throw e;
   }
   try {
-    await sendSubscriptionTokens(keyPair.publicAddress, 3.99);
+    console.log('sending subscription tokens');
+    // $3.99 plan gives the user 100 credits
+    await sendSubscriptionTokens(keyPair.publicAddress, 100);
   } catch (e) {
-    console.error(e);
+    console.error('error sending subscription tokens', e);
     throw e;
   }
 }
