@@ -1,6 +1,6 @@
 import { getAuthenticatedUser } from '../../auth/logic';
 import { findCustomer } from '../../payments/stripe';
-import { PaymentsInfoObject } from '../types/payments-info';
+import PaymentsInfoObject from '../types/payments-info';
 import { accountCredits } from '../../payments/stellar';
 
 const PaymentsInfo = {
