@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLBoolean, GraphQLInt } from 'graphql';
 
 export const PaymentsInfoObject: GraphQLObjectType = new GraphQLObjectType({
-  name: 'Payments Info',
+  name: 'PaymentsInfoObject',
   description: 'Payments info object',
   fields: () => {
     return {
