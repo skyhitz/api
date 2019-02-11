@@ -5,6 +5,7 @@ if (Config.ENV === 'production') {
   whitelist = ['https://skyhitz.io'];
 } else {
   whitelist = [
+    'https://skyhitz.io',
     'https://vice.skyhitz.io',
     'http://localhost:3000',
     'https://us-central1-skyhitz-161021.cloudfunctions.net'
