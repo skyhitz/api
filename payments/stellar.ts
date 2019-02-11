@@ -154,13 +154,16 @@ export async function mergeAccount(accountSeed: string) {
 }
 
 export async function accountCredits(publicAddress: string) {
-  let res: any = await stellarServer
+  const { balances }: any = await stellarServer
     .accounts()
     .accountId(publicAddress)
     .call();
 
-  let currentBalance = res.balances.filter(
+  const [currentBalance] = balances.filter(
     (balance: any) => balance.asset_code === ASSET_CODE
   );
-  return currentBalance.balance;
+  if (currentBalance && currentBalance.balance) {
+    return parseInt(currentBalance.balance);
+  }
+  return 0;
 }
