@@ -152,3 +152,15 @@ export async function mergeAccount(accountSeed: string) {
   transaction.sign(destinationKeys);
   return stellarServer.submitTransaction(transaction);
 }
+
+export async function accountCredits(publicAddress: string) {
+  let res: any = await stellarServer
+    .accounts()
+    .accountId(publicAddress)
+    .call();
+
+  let currentBalance = res.balances.filter(
+    (balance: any) => balance.asset_code === ASSET_CODE
+  );
+  return currentBalance.balance;
+}
