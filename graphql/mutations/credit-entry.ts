@@ -23,9 +23,12 @@ const creditEntry = {
     let user = await getAuthenticatedUser(ctx);
 
     // Get owner of entry
-    const { email } = await Database.models.user.findOne({
+    const { entryOwner } = await Database.models.entry.findOne({
+      include: [{ model: Database.models.user, as: 'EntryOwner' }],
       where: { id: id }
     });
+
+    const { email } = entryOwner;
 
     // Get their stellar account address and our account key
     const [accountToCredit, accountToWithdraw] = [
