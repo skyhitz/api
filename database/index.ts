@@ -8,12 +8,6 @@ import {
   UserInstance,
   UserAttribute,
   UserType,
-  TopicInstance,
-  TopicAttribute,
-  TopicType,
-  YoutubePlaylistAttribute,
-  YoutubePlaylistInstance,
-  YoutubePlaylistType,
   PlaylistAttribute,
   PlaylistInstance,
   PlaylistType,
@@ -31,7 +25,10 @@ import {
   EntryLikeType,
   EntryOwnerInstance,
   EntryOwnerAttribute,
-  EntryOwnerType
+  EntryOwnerType,
+  EntryCreditInstance,
+  EntryCreditAttribute,
+  EntryCreditType
 } from '../models';
 
 const poolOptions: any = {
@@ -62,12 +59,9 @@ const Entry = Database.define<EntryInstance, EntryAttribute>(
   EntryType
 );
 const User = Database.define<UserInstance, UserAttribute>('user', UserType);
-Database.define<TopicInstance, TopicAttribute>('topic', TopicType);
-Database.define<YoutubePlaylistInstance, YoutubePlaylistAttribute>(
-  'youtubePlaylist',
-  YoutubePlaylistType
-);
+
 Database.define<SearchInstance, SearchAttribute>('search', SearchType);
+
 const EntryLike = Database.define<EntryLikeInstance, EntryLikeAttribute>(
   'entryLike',
   EntryLikeType
@@ -75,6 +69,11 @@ const EntryLike = Database.define<EntryLikeInstance, EntryLikeAttribute>(
 const EntryOwner = Database.define<EntryOwnerInstance, EntryOwnerAttribute>(
   'entryOwner',
   EntryOwnerType
+);
+
+const EntryCredit = Database.define<EntryCreditInstance, EntryCreditAttribute>(
+  'entryCredit',
+  EntryCreditType
 );
 const UserPlaylist = Database.define<
   UserPlaylistInstance,
@@ -93,6 +92,8 @@ Entry.belongsToMany(User, { as: 'EntryLike', through: EntryLike });
 User.belongsToMany(Entry, { as: 'EntryLike', through: EntryLike });
 Entry.belongsToMany(User, { as: 'EntryOwner', through: EntryOwner });
 User.belongsToMany(Entry, { as: 'EntryOwner', through: EntryOwner });
+Entry.belongsToMany(User, { as: 'EntryCredit', through: EntryCredit });
+User.belongsToMany(Entry, { as: 'EntryCredit', through: EntryCredit });
 
 Playlist.belongsToMany(User, { as: 'Collaborators', through: UserPlaylist });
 User.belongsToMany(Playlist, { as: 'UserPlaylists', through: UserPlaylist });

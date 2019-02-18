@@ -2,7 +2,8 @@ import {
   GraphQLObjectType,
   GraphQLInt,
   GraphQLString,
-  GraphQLList
+  GraphQLList,
+  GraphQLBoolean
 } from 'graphql';
 
 import Entry from './entry';
@@ -88,6 +89,12 @@ const User: GraphQLObjectType = new GraphQLObjectType({
         type: GraphQLString,
         resolve(user: any) {
           return user.phone;
+        }
+      },
+      testing: {
+        type: GraphQLBoolean,
+        resolve(user: any) {
+          return user.testing;
         }
       },
       entries: {

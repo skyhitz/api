@@ -167,3 +167,43 @@ export async function accountCredits(publicAddress: string) {
   }
   return 0;
 }
+
+export async function payment(
+  publicAddress: string,
+  seed: string,
+  amount: number
+) {
+  const sourceKeypair = StellarSdk.Keypair.fromSecret(seed);
+  const sourcePublicKey = sourceKeypair.publicKey();
+
+  return stellarServer
+    .loadAccount(sourcePublicKey)
+    .then(account => {
+      var transaction = new StellarSdk.TransactionBuilder(account)
+        .addOperation(
+          StellarSdk.Operation.payment({
+            destination: publicAddress,
+            asset,
+            amount: amount.toString()
+          })
+        )
+        .build();
+
+      transaction.sign(sourceKeypair);
+
+      stellarServer
+        .submitTransaction(transaction)
+        .then(transactionResult => {
+          console.log(JSON.stringify(transactionResult, null, 2));
+          console.log('\nSuccess! View the transaction at: ');
+          console.log(transactionResult._links.transaction.href);
+        })
+        .catch(err => {
+          console.log('An error has occured:');
+          console.log(err);
+        });
+    })
+    .catch(e => {
+      console.error(e);
+    });
+}

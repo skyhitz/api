@@ -17,6 +17,7 @@ import CancelSubscription from './cancel-subscription';
 import RemoveEntry from './remove-entry';
 import UpdateAlgoliaEntriesWithUser from './update-algolia-entries-with-user';
 import SyncAlgoliaUsers from './sync-algolia-users';
+import CreditEntry from './credit-entry';
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -27,6 +28,7 @@ const Mutation = new GraphQLObjectType({
       addRecentUserSearch: AddRecentUserSearch,
       createUserWithEmail: CreateUserWithEmail,
       createEntry: CreateEntry,
+      creditEntry: CreditEntry,
       signIn: SignIn,
       sendResetEmail: SendResetEmail,
       updatePassword: UpdatePassword,

@@ -7,7 +7,7 @@ import { Config } from '../config';
 import * as jwt from 'express-jwt';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 const compression = require('compression');
-import { webhooks } from '../webhooks/webhooks';
+// import { webhooks } from '../webhooks/webhooks';
 import { corsOptions } from './cors';
 let cors = require('cors');
 
@@ -41,22 +41,26 @@ const setupGraphQLServer = () => {
     graphqlExpress(buildOptions)
   );
 
-  /**
-   * We prepend /function-name the http trigger created is:
-   * https://us-central1-skyhitz-161021.cloudfunctions.net/function-name/graphql
-   * We take it out on development mode since we don't need it when running the server locally.
-   */
-  graphQLServer.use(
-    '/graphiql',
-    graphiqlExpress({ endpointURL: `${Config.API_ENDPOINT}/graphql` })
-  );
+  if (Config.ENV !== 'development') {
+    /**
+     * We prepend /function-name the http trigger created is:
+     * https://us-central1-skyhitz-161021.cloudfunctions.net/function-name/graphql
+     * We take it out on development mode since we don't need it when running the server locally.
+     */
+    graphQLServer.use(
+      '/graphiql',
+      graphiqlExpress({ endpointURL: `${Config.API_ENDPOINT}/graphql` })
+    );
 
+    return graphQLServer;
+  }
+  graphQLServer.use('/graphiql', graphiqlExpress({ endpointURL: `/graphql` }));
   return graphQLServer;
 };
 
 const graphQLServer = setupGraphQLServer();
 
-webhooks(graphQLServer);
+// webhooks(graphQLServer);
 
 if (Config.ENV === 'development') {
   graphQLServer.listen(3000);
