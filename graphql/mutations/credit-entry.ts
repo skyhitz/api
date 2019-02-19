@@ -23,12 +23,11 @@ const creditEntry = {
     let user = await getAuthenticatedUser(ctx);
 
     // Get owner of entry
-    const { entryOwner } = await Database.models.entry.findOne({
-      include: [{ model: Database.models.user, as: 'EntryOwner' }],
+    const match = await Database.models.entry.findOne({
       where: { id: id }
     });
 
-    const { email } = entryOwner;
+    const [{ email }] = await match.getEntryOwner();
 
     // Get their stellar account address and our account key
     const [accountToCredit, accountToWithdraw] = [
@@ -40,7 +39,15 @@ const creditEntry = {
     const accountToWithdrawSeed = accountToWithdraw.metadata.seed;
 
     // Transact credits from wallet to wallet
-    await payment(accountToCreditPublicAddress, accountToWithdrawSeed, credits);
+    try {
+      await payment(
+        accountToCreditPublicAddress,
+        accountToWithdrawSeed,
+        credits
+      );
+    } catch (e) {
+      return false;
+    }
 
     // Update relationship in our database
     let [entry] = await user.getEntryCredit({ where: { id: id } });
