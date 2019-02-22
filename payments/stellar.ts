@@ -176,24 +176,20 @@ export async function payment(
   const sourceKeypair = StellarSdk.Keypair.fromSecret(seed);
   const sourcePublicKey = sourceKeypair.publicKey();
 
-  return stellarServer.loadAccount(sourcePublicKey).then(account => {
-    var transaction = new StellarSdk.TransactionBuilder(account)
-      .addOperation(
-        StellarSdk.Operation.payment({
-          destination: publicAddress,
-          asset,
-          amount: amount.toString()
-        })
-      )
-      .build();
+  let account = await stellarServer.loadAccount(sourcePublicKey);
+  let transaction = new StellarSdk.TransactionBuilder(account)
+    .addOperation(
+      StellarSdk.Operation.payment({
+        destination: publicAddress,
+        asset,
+        amount: amount.toString()
+      })
+    )
+    .build();
 
-    transaction.sign(sourceKeypair);
-
-    return stellarServer
-      .submitTransaction(transaction)
-      .then(transactionResult => {
-        console.log('\nSuccess! View the transaction at: ');
-        console.log(transactionResult._links.transaction.href);
-      });
-  });
+  transaction.sign(sourceKeypair);
+  let transactionResult = await stellarServer.submitTransaction(transaction);
+  console.log('\nSuccess! View the transaction at: ');
+  console.log(transactionResult._links.transaction.href);
+  return transactionResult;
 }
