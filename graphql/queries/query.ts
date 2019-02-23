@@ -12,6 +12,7 @@ import EntryLikes from './entry-likes';
 import UserPlaylists from './user-playlists';
 import PaymentsInfo from './payments-info';
 import HasCreditFromUser from './has-credit-from-user';
+import CanCreditEntry from './can-credit-entry';
 
 const Query = new GraphQLObjectType({
   name: 'Query',
@@ -29,7 +30,8 @@ const Query = new GraphQLObjectType({
       entryLikes: EntryLikes,
       userPlaylists: UserPlaylists,
       paymentsInfo: PaymentsInfo,
-      hasCreditFromUser: HasCreditFromUser
+      hasCreditFromUser: HasCreditFromUser,
+      canCreditEntry: CanCreditEntry
     };
   }
 });
