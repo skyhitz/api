@@ -49,7 +49,6 @@ const creditEntry = {
       return false;
     }
 
-    // Update relationship in our database
     let [entry] = await user.getEntryCredit({ where: { id: id } });
 
     if (entry && entry.entryCredit) {
