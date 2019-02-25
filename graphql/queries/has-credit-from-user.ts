@@ -14,7 +14,7 @@ const hasCreditFromUser = {
     let user = await getAuthenticatedUser(ctx);
 
     // select SUM (credits) AS "totalCredits" from "entryCredits" where "entryId" = '-LYySE3snPZE6GL49UaM';
-    const [[entry], totalCredits] = [
+    const [[entry], [{ totalCredits }]] = [
       await user.getEntryCredit({ where: { id: id } }),
       await Database.query(
         `select SUM (credits) AS "totalCredits" from "entryCredits" where "entryId" = '${id}'`,
@@ -22,14 +22,15 @@ const hasCreditFromUser = {
       )
     ];
 
-    console.log(totalCredits);
-
     if (entry && entry.entryCredit) {
-      return { credits: entry.entryCredit.credits, totalCredits: totalCredits };
+      return {
+        credits: entry.entryCredit.credits,
+        totalCredits: parseInt(totalCredits)
+      };
     }
     return {
       credits: 0,
-      totalCredits: totalCredits
+      totalCredits: parseInt(totalCredits)
     };
   }
 };
