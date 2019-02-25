@@ -7,6 +7,7 @@ const PaymentsInfo = {
   type: PaymentsInfoObject,
   async resolve(root: any, args: any, ctx: any) {
     let user;
+    let customer;
     try {
       user = await getAuthenticatedUser(ctx);
     } catch (e) {
@@ -16,19 +17,19 @@ const PaymentsInfo = {
       };
     }
 
-    let customer = await findCustomer(user.email);
-
-    if (!!customer) {
+    try {
+      customer = await findCustomer(user.email);
       let credits = await accountCredits(customer.metadata.publicAddress);
       return {
         subscribed: true,
         credits: credits
       };
+    } catch (e) {
+      return {
+        subscribed: false,
+        credits: 0
+      };
     }
-    return {
-      subscribed: false,
-      credits: 0
-    };
   }
 };
 
