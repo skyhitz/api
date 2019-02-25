@@ -22,10 +22,11 @@ const hasCreditFromUser = {
       )
     ];
 
-    if (entry && entry.entryCredit) {
-      return { credits: entry.entryCredit.credits };
-    }
     console.log(totalCredits);
+
+    if (entry && entry.entryCredit) {
+      return { credits: entry.entryCredit.credits, totalCredits: totalCredits };
+    }
     return {
       credits: 0,
       totalCredits: totalCredits
