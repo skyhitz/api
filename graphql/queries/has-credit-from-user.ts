@@ -22,6 +22,8 @@ const hasCreditFromUser = {
       )
     ];
 
+    console.log(totalCredits);
+
     if (entry && entry.entryCredit) {
       return {
         credits: entry.entryCredit.credits,
