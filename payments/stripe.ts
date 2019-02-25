@@ -50,16 +50,23 @@ export async function createCustomerAndStartSubscription({
   email,
   cardToken
 }: CustomerPayload) {
-  let { id } = await createCustomer({ email, cardToken });
+  let customerId;
+  try {
+    let { id } = await createCustomer({ email, cardToken });
+    customerId = id;
+  } catch (e) {
+    let { id } = await findCustomer(email);
+    customerId = id;
+  }
   await stripe.subscriptions.create({
-    customer: id,
+    customer: customerId,
     items: [
       {
         plan: Config.STRIPE_PLAN_ID
       }
     ]
   });
-  return id;
+  return customerId;
 }
 
 export async function cancelSubscription(email: string) {
