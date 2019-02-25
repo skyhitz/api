@@ -1,6 +1,7 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import CreditFromUser from '../types/credit-from-user';
 import { getAuthenticatedUser } from '../../auth/logic';
+import Database from '../../database';
 
 const hasCreditFromUser = {
   type: CreditFromUser,
@@ -11,14 +12,23 @@ const hasCreditFromUser = {
   },
   async resolve(_: any, { id }: any, ctx: any) {
     let user = await getAuthenticatedUser(ctx);
-    let [entry] = await user.getEntryCredit({ where: { id: id } });
+
+    // select SUM (credits) AS "totalCredits" from "entryCredits" where "entryId" = '-LYySE3snPZE6GL49UaM';
+    const [[entry], totalCredits] = [
+      await user.getEntryCredit({ where: { id: id } }),
+      await Database.query(
+        `select SUM (credits) AS "totalCredits" from "entryCredits" where "entryId" = '${id}'`,
+        { type: Database.QueryTypes.SELECT }
+      )
+    ];
 
     if (entry && entry.entryCredit) {
       return { credits: entry.entryCredit.credits };
     }
-
+    console.log(totalCredits);
     return {
-      credits: 0
+      credits: 0,
+      totalCredits: totalCredits
     };
   }
 };
