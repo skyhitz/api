@@ -7,6 +7,10 @@ const CreditFromUser: GraphQLObjectType = new GraphQLObjectType({
     credits: {
       type: GraphQLInt,
       description: 'Count of entry credits'
+    },
+    totalCredits: {
+      type: GraphQLInt,
+      description: 'Count of total entry credits'
     }
   })
 });
