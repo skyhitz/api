@@ -13,6 +13,11 @@ export const StellarSdk = StellarSdkLibrary;
 const sourceKeys = StellarSdk.Keypair.fromSecret(Config.ISSUER_SEED);
 const ASSET_CODE = 'SKYHITZ';
 const asset = new StellarSdk.Asset(ASSET_CODE, sourceKeys.publicKey());
+const ANCHOR_USD = new StellarSdk.Asset(
+  'USD',
+  'GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX'
+);
+const XLM = StellarSdk.Asset.native();
 
 export async function fundTestAccount(publicKey: string) {
   return fetch(`https://friendbot.stellar.org/?addr=${publicKey}`);
@@ -37,7 +42,7 @@ export async function fundAccount(destinationKey: string) {
     .addOperation(
       StellarSdk.Operation.payment({
         destination: destinationKey,
-        asset: StellarSdk.Asset.native(),
+        asset: XLM,
         amount: '1.5'
       })
     )
@@ -188,6 +193,64 @@ export async function payment(
     .build();
 
   transaction.sign(sourceKeypair);
+  let transactionResult = await stellarServer.submitTransaction(transaction);
+  console.log('\nSuccess! View the transaction at: ');
+  console.log(transactionResult._links.transaction.href);
+  return transactionResult;
+}
+
+export async function getUSDPrice() {
+  let response = await stellarServer.orderbook(ANCHOR_USD, XLM).call();
+  return response.records[0].bids[0].price;
+}
+
+export async function convertUSDtoXLM(USDAmount: number) {
+  if (Config.ENV === 'production') {
+    const currentPrice = await getUSDPrice();
+    const XLMAmount = USDAmount * currentPrice;
+    return XLMAmount;
+  }
+  // using 12.5 cents as reference
+  return USDAmount * 12.5;
+}
+
+export async function chargeFees(seed: string, amount: number) {
+  const sourceKeypair = StellarSdk.Keypair.fromSecret(seed);
+  const sourcePublicKey = sourceKeypair.publicKey();
+
+  let account = await stellarServer.loadAccount(sourcePublicKey);
+  let transaction = new StellarSdk.TransactionBuilder(account)
+    .addOperation(
+      StellarSdk.Operation.payment({
+        destination: sourceKeys.publicKey(),
+        asset,
+        amount: amount.toString()
+      })
+    )
+    .build();
+
+  transaction.sign(sourceKeypair);
+  let transactionResult = await stellarServer.submitTransaction(transaction);
+  console.log('\nSuccess! View the transaction at: ');
+  console.log(transactionResult._links.transaction.href);
+  return transactionResult;
+}
+
+export async function payUserInXLM(address: string, amount: number) {
+  const sourcePublicKey = sourceKeys.publicKey();
+
+  let account = await stellarServer.loadAccount(sourcePublicKey);
+  let transaction = new StellarSdk.TransactionBuilder(account)
+    .addOperation(
+      StellarSdk.Operation.payment({
+        destination: address,
+        asset: XLM,
+        amount: amount.toString()
+      })
+    )
+    .build();
+
+  transaction.sign(sourceKeys);
   let transactionResult = await stellarServer.submitTransaction(transaction);
   console.log('\nSuccess! View the transaction at: ');
   console.log(transactionResult._links.transaction.href);

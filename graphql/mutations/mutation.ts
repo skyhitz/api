@@ -18,6 +18,7 @@ import RemoveEntry from './remove-entry';
 import UpdateAlgoliaEntriesWithUser from './update-algolia-entries-with-user';
 import SyncAlgoliaUsers from './sync-algolia-users';
 import CreditEntry from './credit-entry';
+import WithdrawalToExternalWallet from './withdrawal-to-external-wallet';
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -42,7 +43,8 @@ const Mutation = new GraphQLObjectType({
       cancelSubscription: CancelSubscription,
       removeEntry: RemoveEntry,
       updateAlgoliaEntriesWithUser: UpdateAlgoliaEntriesWithUser,
-      syncAlgoliaUsers: SyncAlgoliaUsers
+      syncAlgoliaUsers: SyncAlgoliaUsers,
+      withdrawalToExternalWallet: WithdrawalToExternalWallet
     };
   }
 });
