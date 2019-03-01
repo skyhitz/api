@@ -55,7 +55,9 @@ const withdrawalToExternalWallet = {
     await withdrawalFromAccount(seed, amount);
     // console.log(`chared for fees ${transactionFees}`);
     try {
-      console.log(`withdrawal to address ${address}, amount ${xlmAmount}`);
+      console.log(
+        `withdrawal to address ${address}, amount ${xlmAmount.toFixed(6)}`
+      );
       await payUserInXLM(address, xlmAmount);
       return true;
     } catch (e) {

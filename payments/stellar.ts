@@ -245,7 +245,7 @@ export async function payUserInXLM(address: string, amount: number) {
       StellarSdk.Operation.payment({
         destination: address,
         asset: XLM,
-        amount: amount.toFixed(7).toString()
+        amount: amount.toFixed(6).toString()
       })
     )
     .build();
