@@ -214,7 +214,7 @@ export async function convertUSDtoXLM(USDAmount: number) {
   return USDAmount * 12.5;
 }
 
-export async function chargeFees(seed: string, amount: number) {
+export async function withdrawalFromAccount(seed: string, amount: number) {
   const sourceKeypair = StellarSdk.Keypair.fromSecret(seed);
   const sourcePublicKey = sourceKeypair.publicKey();
 
