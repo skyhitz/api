@@ -60,6 +60,7 @@ const withdrawalToExternalWallet = {
       await payUserInXLM(address, xlmAmount);
       return true;
     } catch (e) {
+      console.log(`error`, e);
       return false;
     }
   }
