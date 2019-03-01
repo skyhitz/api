@@ -58,6 +58,7 @@ export async function createCustomerAndStartSubscription({
     let { id } = await findCustomer(email);
     customerId = id;
   }
+
   await stripe.subscriptions.create({
     customer: customerId,
     items: [
