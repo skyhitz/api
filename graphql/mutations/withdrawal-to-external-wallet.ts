@@ -48,14 +48,15 @@ const withdrawalToExternalWallet = {
     const transactionFees = skyhitzFee + creditCardFees;
 
     await chargeFees(seed, transactionFees);
-
+    console.log(`chared for fees ${transactionFees}`);
     const remainingBalance = amount - transactionFees;
     // $6.99 divided 100 credits = 0.0699 SKYHITZ per dollar
     const dollarBalance = remainingBalance * 0.0699;
     const xlmAmount = await convertUSDtoXLM(dollarBalance);
-
+    console.log(`converted ${dollarBalance} USD to ${xlmAmount}`);
     // Withdrawal payment in XLM to the user external wallet
     try {
+      console.log(`withdrawal to address ${address}, amount ${xlmAmount}`);
       await payUserInXLM(address, xlmAmount);
       return true;
     } catch (e) {
