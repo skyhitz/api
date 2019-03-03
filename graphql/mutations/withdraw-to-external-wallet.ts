@@ -16,7 +16,7 @@ import {
 /**
  * Withdraws user balance to external address in XLM
  */
-const withdrawalToExternalWallet = {
+const withdrawToExternalWallet = {
   type: GraphQLBoolean,
   args: {
     address: {
@@ -67,4 +67,4 @@ const withdrawalToExternalWallet = {
   }
 };
 
-export default withdrawalToExternalWallet;
+export default withdrawToExternalWallet;
