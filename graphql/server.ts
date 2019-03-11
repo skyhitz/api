@@ -7,7 +7,7 @@ import { Config } from '../config';
 import * as jwt from 'express-jwt';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 const compression = require('compression');
-import { webhooks } from '../webhooks/webhooks';
+// import { webhooks } from '../webhooks/webhooks';
 import { corsOptions } from './cors';
 let cors = require('cors');
 
