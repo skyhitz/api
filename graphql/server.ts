@@ -7,7 +7,7 @@ import { Config } from '../config';
 import * as jwt from 'express-jwt';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 const compression = require('compression');
-// import { webhooks } from '../webhooks/webhooks';
+import { webhooks } from '../webhooks/webhooks';
 import { corsOptions } from './cors';
 let cors = require('cors');
 
@@ -15,13 +15,13 @@ const buildOptions: any = async (req: any) => {
   let context = {
     user: req.user
       ? Database.models.user.findOne({
-          where: { id: req.user.id, version: req.user.version }
+          where: { id: req.user.id, version: req.user.version },
         })
-      : Promise.resolve(null)
+      : Promise.resolve(null),
   };
   return {
     schema: Schema,
-    context: context
+    context: context,
   };
 };
 
@@ -36,7 +36,7 @@ const setupGraphQLServer = () => {
     BodyParser.json(),
     jwt({
       secret: Config.JWT_SECRET,
-      credentialsRequired: false
+      credentialsRequired: false,
     }),
     graphqlExpress(buildOptions)
   );
@@ -60,7 +60,7 @@ const setupGraphQLServer = () => {
 
 const graphQLServer = setupGraphQLServer();
 
-// webhooks(graphQLServer);
+webhooks(graphQLServer);
 
 if (Config.ENV === 'development') {
   graphQLServer.listen(3000);
