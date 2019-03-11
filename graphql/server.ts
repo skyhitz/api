@@ -60,7 +60,7 @@ const setupGraphQLServer = () => {
 
 const graphQLServer = setupGraphQLServer();
 
-webhooks(graphQLServer);
+// webhooks(graphQLServer);
 
 if (Config.ENV === 'development') {
   graphQLServer.listen(3000);

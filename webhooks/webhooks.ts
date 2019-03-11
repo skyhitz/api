@@ -1,4 +1,4 @@
-import { Express } from 'express';
+// import { Express } from 'express';
 // import * as Stripe from 'stripe';
 // import { Config } from "../config";
 // import { sendSubscriptionTokens } from "../payments/stellar";
@@ -18,17 +18,17 @@ import { Express } from 'express';
 //   });
 // }
 
-function cloudinaryUploadWebhook(graphQLServer: Express) {
-  graphQLServer.post('/cloudinary/upload', async (request, response) => {
-    const event = JSON.parse(request.body);
-    console.log(event);
-  });
-}
+// function cloudinaryUploadWebhook(graphQLServer: Express) {
+//   graphQLServer.post('/cloudinary/upload', async (request, response) => {
+//     const event = JSON.parse(request.body);
+//     console.log(event);
+//   });
+// }
 
-export function webhooks(graphQLServer: Express) {
-  // stripeWebhook(graphQLServer);
-  cloudinaryUploadWebhook(graphQLServer);
-}
+// export function webhooks(graphQLServer: Express) {
+//   // stripeWebhook(graphQLServer);
+//   cloudinaryUploadWebhook(graphQLServer);
+// }
 
 // async function processChargeSucceeded(object: any, response: any) {
 //   const { amount, customer } = object;
