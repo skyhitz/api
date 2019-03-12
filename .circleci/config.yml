@@ -15,6 +15,9 @@ jobs:
           name: Authenticate google cloud
           command: gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
       - run:
+          name: Export google oauth
+          command: echo $GOOGLE_OAUTH_2_CREDENTIALS | base64 --decode > ${HOME}/.google-oauth2-credentials.json
+      - run:
           name: Set google cloud project
           command: gcloud config set project $PROJECT_ID
       - run:
