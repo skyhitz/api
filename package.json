@@ -53,7 +53,8 @@
     "stellar-sdk": "^0.10.1",
     "stripe": "^6.5.0",
     "ts-node": "3.1.0",
-    "typescript": "^2.2.2"
+    "typescript": "^2.2.2",
+    "youtube-video-api": "^0.3.7"
   },
   "devDependencies": {
     "tslint": "^5.5.0"

@@ -25,5 +25,7 @@ export const Config: IConfig = {
   STRIPE_CONNECT_CLIENT_ID: process.env.STRIPE_CONNECT_CLIENT_ID || '',
   STRIPE_PLAN_ID: process.env.STRIPE_PLAN_ID || '',
   ISSUER_ID: process.env.ISSUER_ID || '',
-  ISSUER_SEED: process.env.ISSUER_SEED || ''
+  ISSUER_SEED: process.env.ISSUER_SEED || '',
+  YOUTUBE_API_CLIENT_SECRET: process.env.YOUTUBE_API_CLIENT_SECRET || '',
+  YOUTUBE_API_CLIENT_ID: process.env.YOUTUBE_API_CLIENT_ID || '',
 };

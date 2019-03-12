@@ -20,4 +20,6 @@ export interface IConfig {
   STRIPE_PLAN_ID: string;
   ISSUER_ID: string;
   ISSUER_SEED: string;
+  YOUTUBE_API_CLIENT_ID: string;
+  YOUTUBE_API_CLIENT_SECRET: string;
 }
