@@ -3,6 +3,7 @@ var Youtube = require('youtube-video-api');
 
 export function uploadVideoToYoutube(videoUrl: string) {
   var youtube = Youtube({
+    saveTokens: false,
     video: {
       part: 'status,snippet',
     },
