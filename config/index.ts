@@ -28,4 +28,6 @@ export const Config: IConfig = {
   ISSUER_SEED: process.env.ISSUER_SEED || '',
   YOUTUBE_API_CLIENT_SECRET: process.env.YOUTUBE_API_CLIENT_SECRET || '',
   YOUTUBE_API_CLIENT_ID: process.env.YOUTUBE_API_CLIENT_ID || '',
+  YOUTUBE_API_ACCESS_TOKEN: process.env.YOUTUBE_API_ACCESS_TOKEN || '',
+  YOUTUBE_API_REFRESH_TOKEN: process.env.YOUTUBE_API_REFRESH_TOKEN || '',
 };

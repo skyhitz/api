@@ -22,4 +22,6 @@ export interface IConfig {
   ISSUER_SEED: string;
   YOUTUBE_API_CLIENT_ID: string;
   YOUTUBE_API_CLIENT_SECRET: string;
+  YOUTUBE_API_ACCESS_TOKEN: string;
+  YOUTUBE_API_REFRESH_TOKEN: string;
 }

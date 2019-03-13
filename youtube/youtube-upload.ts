@@ -24,6 +24,10 @@ export function uploadVideoToYoutube(videoUrl: string) {
     youtube.authenticate(
       Config.YOUTUBE_API_CLIENT_ID,
       Config.YOUTUBE_API_CLIENT_SECRET,
+      {
+        access_token: Config.YOUTUBE_API_ACCESS_TOKEN,
+        refresh_token: Config.YOUTUBE_API_REFRESH_TOKEN,
+      },
       (err: any, tokens: any) => {
         if (err) {
           console.error('Cannot authenticate:', err);
