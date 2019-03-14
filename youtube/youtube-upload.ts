@@ -55,7 +55,6 @@ export function uploadVideoToYoutube(videoUrl: string) {
               fs.close(file.fd);
               fs.unlinkSync(localPath);
               resolve(video);
-
               return;
             });
           }
