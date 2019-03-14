@@ -1,6 +1,6 @@
 import { Config } from '../config/index';
 const Youtube = require('youtube-video-api');
-const http = require('http');
+const https = require('https');
 const fs = require('fs');
 
 export function uploadVideoToYoutube(videoUrl: string) {
@@ -27,7 +27,7 @@ export function uploadVideoToYoutube(videoUrl: string) {
     const fileExtension = videoUrl.split('.').pop();
     const localPath = `./video.${fileExtension}`;
     const file = fs.createWriteStream(localPath);
-    http.get(videoUrl, (response: any) => {
+    https.get(videoUrl, (response: any) => {
       response.pipe(file);
       response.on('end', () => {
         youtube.authenticate(
