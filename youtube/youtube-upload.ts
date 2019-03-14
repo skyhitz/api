@@ -1,5 +1,7 @@
 import { Config } from '../config/index';
-var Youtube = require('youtube-video-api');
+const Youtube = require('youtube-video-api');
+const http = require('http');
+const fs = require('fs');
 
 export function uploadVideoToYoutube(videoUrl: string) {
   var youtube = Youtube({
@@ -22,32 +24,43 @@ export function uploadVideoToYoutube(videoUrl: string) {
   };
 
   return new Promise((resolve, reject) => {
-    youtube.authenticate(
-      Config.YOUTUBE_API_CLIENT_ID,
-      Config.YOUTUBE_API_CLIENT_SECRET,
-      {
-        access_token: Config.YOUTUBE_API_ACCESS_TOKEN,
-        refresh_token: Config.YOUTUBE_API_REFRESH_TOKEN,
-      },
-      (err: any, tokens: any) => {
-        if (err) {
-          console.error('Cannot authenticate:', err);
-          reject();
-          return;
-        }
+    const fileExtension = videoUrl.split('.').pop();
+    const localPath = `./video.${fileExtension}`;
+    const file = fs.createWriteStream(localPath);
+    http.get(videoUrl, (response: any) => {
+      response.pipe(file);
+      response.on('end', () => {
+        youtube.authenticate(
+          Config.YOUTUBE_API_CLIENT_ID,
+          Config.YOUTUBE_API_CLIENT_SECRET,
+          {
+            access_token: Config.YOUTUBE_API_ACCESS_TOKEN,
+            refresh_token: Config.YOUTUBE_API_REFRESH_TOKEN,
+          },
+          (err: any, tokens: any) => {
+            if (err) {
+              console.error('Cannot authenticate:', err);
+              reject();
+              return;
+            }
 
-        youtube.upload(videoUrl, params, (err: any, video: any) => {
-          if (err) {
-            console.error('Cannot upload video:', err);
-            reject();
-            return;
+            youtube.upload(localPath, params, (err: any, video: any) => {
+              if (err) {
+                console.error('Cannot upload video:', err);
+                reject();
+                return;
+              }
+
+              console.log('Video was uploaded with ID:', video.id);
+              fs.close(file.fd);
+              fs.unlinkSync(localPath);
+              resolve(video);
+
+              return;
+            });
           }
-
-          console.log('Video was uploaded with ID:', video.id);
-          resolve(video);
-          return;
-        });
-      }
-    );
+        );
+      });
+    });
   });
 }
