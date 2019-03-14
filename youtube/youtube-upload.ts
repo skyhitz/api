@@ -25,7 +25,7 @@ export function uploadVideoToYoutube(videoUrl: string) {
 
   return new Promise((resolve, reject) => {
     const fileExtension = videoUrl.split('.').pop();
-    const localPath = `./video.${fileExtension}`;
+    const localPath = `/tmp/video.${fileExtension}`;
     const file = fs.createWriteStream(localPath);
     https.get(videoUrl, (response: any) => {
       response.pipe(file);
