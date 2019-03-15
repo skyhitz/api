@@ -3,6 +3,15 @@ const Youtube = require('youtube-video-api');
 const https = require('https');
 const fs = require('fs');
 
+async function getAccessToken() {
+  let data = new FormData();
+  data.append('refresh_token', Config.YOUTUBE_API_REFRESH_TOKEN);
+  data.append('client_id', Config.YOUTUBE_API_CLIENT_ID);
+  data.append('client_secret', Config.YOUTUBE_API_CLIENT_SECRET);
+  data.append('grant_type', Config.YOUTUBE_API_CLIENT_SECRET);
+  return await fetch('https://www.googleapis.com/oauth2/v4/token', { method: 'POST', body: data });
+}
+
 export function uploadVideoToYoutube(videoUrl: string) {
   var youtube = Youtube({
     saveTokens: false,
@@ -29,12 +38,14 @@ export function uploadVideoToYoutube(videoUrl: string) {
     const file = fs.createWriteStream(localPath);
     https.get(videoUrl, (response: any) => {
       response.pipe(file);
-      response.on('end', () => {
+      response.on('end', async () => {
+        const res = await getAccessToken();
+        let { access_token } = await res.json();
         youtube.authenticate(
           Config.YOUTUBE_API_CLIENT_ID,
           Config.YOUTUBE_API_CLIENT_SECRET,
           {
-            access_token: Config.YOUTUBE_API_ACCESS_TOKEN,
+            access_token: access_token,
             refresh_token: Config.YOUTUBE_API_REFRESH_TOKEN,
           },
           (err: any, tokens: any) => {
