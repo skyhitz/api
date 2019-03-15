@@ -2,6 +2,7 @@ import { Config } from '../config/index';
 const Youtube = require('youtube-video-api');
 const https = require('https');
 const fs = require('fs');
+const FormData = require('form-data');
 
 async function getAccessToken() {
   let data = new FormData();
