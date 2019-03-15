@@ -1,4 +1,5 @@
 import { Config } from '../config/index';
+import fetch from 'node-fetch';
 const Youtube = require('youtube-video-api');
 const https = require('https');
 const fs = require('fs');
