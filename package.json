@@ -5,7 +5,7 @@
   "author": "Alejo Mendoza",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development ts-node -F ./graphql/server.ts"
+    "dev": "NODE_ENV=development ts-node --inspect -F ./graphql/server.ts"
   },
   "engineStrict": true,
   "engines": {

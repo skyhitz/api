@@ -10,8 +10,11 @@ async function getAccessToken() {
   data.append('refresh_token', Config.YOUTUBE_API_REFRESH_TOKEN);
   data.append('client_id', Config.YOUTUBE_API_CLIENT_ID);
   data.append('client_secret', Config.YOUTUBE_API_CLIENT_SECRET);
-  data.append('grant_type', Config.YOUTUBE_API_CLIENT_SECRET);
-  return await fetch('https://www.googleapis.com/oauth2/v4/token', { method: 'POST', body: data });
+  data.append('grant_type', 'refresh_token');
+  return await fetch('https://www.googleapis.com/oauth2/v4/token', {
+    method: 'POST',
+    body: data,
+  });
 }
 
 export function uploadVideoToYoutube(videoUrl: string) {
@@ -65,7 +68,6 @@ export function uploadVideoToYoutube(videoUrl: string) {
               }
 
               console.log('Video was uploaded with ID:', video.id);
-              fs.close(file.fd);
               fs.unlinkSync(localPath);
               resolve(video);
               return;
