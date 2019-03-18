@@ -17,7 +17,11 @@ async function getAccessToken() {
   });
 }
 
-export function uploadVideoToYoutube(videoUrl: string) {
+export function uploadVideoToYoutube(
+  videoUrl: string,
+  title: string,
+  description: string
+) {
   var youtube = Youtube({
     saveTokens: false,
     video: {
@@ -28,8 +32,9 @@ export function uploadVideoToYoutube(videoUrl: string) {
   var params = {
     resource: {
       snippet: {
-        title: 'test video',
-        description: 'This is a test video uploaded via the YouTube API',
+        title: title,
+        description: description,
+        categoryId: 10,
       },
       status: {
         privacyStatus: 'public',
