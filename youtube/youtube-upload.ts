@@ -5,6 +5,13 @@ const https = require('https');
 const fs = require('fs');
 const FormData = require('form-data');
 
+const youtube = Youtube({
+  saveTokens: false,
+  video: {
+    part: 'status,snippet',
+  },
+});
+
 async function getAccessToken() {
   let data = new FormData();
   data.append('refresh_token', Config.YOUTUBE_API_REFRESH_TOKEN);
@@ -22,13 +29,6 @@ export function uploadVideoToYoutube(
   title: string,
   description: string
 ): Promise<string> {
-  var youtube = Youtube({
-    saveTokens: false,
-    video: {
-      part: 'status,snippet',
-    },
-  });
-
   var params = {
     resource: {
       snippet: {
@@ -80,6 +80,23 @@ export function uploadVideoToYoutube(
           }
         );
       });
+    });
+  });
+}
+
+export function deleteVideoFromYoutube(id: string) {
+  return new Promise((resolve, reject) => {
+    if (!id) {
+      resolve();
+      return;
+    }
+    youtube.delete(id, (err: any) => {
+      if (err) {
+        reject();
+        return;
+      }
+      resolve();
+      return;
     });
   });
 }
