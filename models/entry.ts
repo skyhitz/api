@@ -4,6 +4,7 @@ export interface EntryAttribute {
   imageUrl: string;
   etag: string;
   videoUrl: string;
+  youtubeId: string;
   description: string;
   title: string;
   id: string;
@@ -21,36 +22,39 @@ export interface EntryModel
 export const EntryType = {
   videoUrl: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+  },
+  youtubeId: {
+    type: Sequelize.STRING,
   },
   imageUrl: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   etag: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   description: {
     type: Sequelize.TEXT,
-    allowNull: false
+    allowNull: false,
   },
   title: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
   },
   id: {
     type: Sequelize.STRING,
     allowNull: false,
     unique: true,
-    primaryKey: true
+    primaryKey: true,
   },
   publishedAtTimestamp: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
   },
   publishedAt: {
     type: Sequelize.STRING,
-    allowNull: false
-  }
+    allowNull: false,
+  },
 };
