@@ -1,6 +1,7 @@
 import { GraphQLString, GraphQLBoolean } from 'graphql';
 import { getAuthenticatedUser } from '../../auth/logic';
 import { uploadVideoToYoutube } from '../../youtube/youtube-upload';
+import Database from '../../database';
 
 const youtubeUpload = {
   type: GraphQLBoolean,
@@ -14,11 +15,18 @@ const youtubeUpload = {
     description: {
       type: GraphQLString,
     },
+    id: {
+      type: GraphQLString,
+    },
   },
-  async resolve(_: any, { videoUrl, title, description }: any, ctx: any) {
+  async resolve(_: any, { videoUrl, title, description, id }: any, ctx: any) {
     await getAuthenticatedUser(ctx);
-    console.log('video uploaded to cloudinary', videoUrl);
-    await uploadVideoToYoutube(videoUrl, title, description);
+    const youtubeId = await uploadVideoToYoutube(videoUrl, title, description);
+    const entry = await Database.models.entry.findOne({
+      where: { id: id },
+    });
+    entry.youtubeId = youtubeId;
+    await entry.save();
     return true;
   },
 };

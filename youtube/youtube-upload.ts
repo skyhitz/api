@@ -21,7 +21,7 @@ export function uploadVideoToYoutube(
   videoUrl: string,
   title: string,
   description: string
-) {
+): Promise<string> {
   var youtube = Youtube({
     saveTokens: false,
     video: {
@@ -74,7 +74,7 @@ export function uploadVideoToYoutube(
 
               console.log('Video was uploaded with ID:', video.id);
               fs.unlinkSync(localPath);
-              resolve(video);
+              resolve(video.id);
               return;
             });
           }
