@@ -35,10 +35,21 @@ const removeEntry = {
     },
   },
   async resolve(_: any, { id, cloudinaryPublicId }: any, ctx: any) {
-    await getAuthenticatedUser(ctx);
+    const user = await getAuthenticatedUser(ctx);
     let entry = await Database.models.entry.findOne({
       where: { id: id },
     });
+
+    try {
+      const result = await entry.getEntryOwner();
+      const ownerId = result[0].id;
+      if (user.id !== ownerId) {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+
     [
       await entry.destroy(),
       await entriesIndex.deleteObject(id),
