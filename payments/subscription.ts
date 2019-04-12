@@ -2,14 +2,9 @@ import { CustomerPayload } from './types';
 import {
   createCustomerAndStartSubscription,
   updateCustomer,
-  cancelSubscription
+  cancelSubscription,
 } from './stripe';
-import {
-  createAndFundAccount,
-  mergeAccount,
-  sendSubscriptionTokens,
-  allowTrust
-} from './stellar';
+import { createAndFundAccount, mergeAccount, allowTrust } from './stellar';
 
 export async function subscribe(customer: CustomerPayload) {
   let keyPair: { secret: string; publicAddress: string };
@@ -39,19 +34,11 @@ export async function subscribe(customer: CustomerPayload) {
     await updateCustomer({
       customerId: customerId,
       publicAddress: keyPair.publicAddress,
-      seed: keyPair.secret
+      seed: keyPair.secret,
     });
     console.log('updated stripe customer with stellar info');
   } catch (e) {
     console.error(e);
-    throw e;
-  }
-  try {
-    console.log('sending subscription tokens');
-    // $3.99 plan gives the user 100 credits
-    await sendSubscriptionTokens(keyPair.publicAddress, 100);
-  } catch (e) {
-    console.error('error sending subscription tokens', e);
     throw e;
   }
 }
