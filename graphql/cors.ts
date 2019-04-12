@@ -8,7 +8,7 @@ if (Config.ENV === 'production') {
     'https://skyhitz.io',
     'https://vice.skyhitz.io',
     'http://localhost:3000',
-    'https://us-central1-skyhitz-161021.cloudfunctions.net'
+    'https://us-central1-skyhitz-161021.cloudfunctions.net',
   ];
 }
 
@@ -24,5 +24,5 @@ export let corsOptions = {
       return callback(new Error(msg), false);
     }
     return callback(null, true);
-  }
+  },
 };

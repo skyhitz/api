@@ -1,15 +1,23 @@
 import { Express } from 'express';
-import * as Stripe from 'stripe';
+import { stripe } from '../payments/stripe';
 import { sendSubscriptionTokens } from '../payments/stellar';
 import { findCustomer } from '../payments/stripe';
+import { Config } from '../config/index';
 
 function stripeWebhook(graphQLServer: Express) {
   graphQLServer.post('/stripe/webhooks', async (request, response) => {
-    const event: Stripe.webhooks.StripeWebhookEvent<any> = JSON.parse(
-      request.body
+    let sig = request.headers['stripe-signature'];
+
+    const event = stripe.webhooks.constructEvent(
+      request.body,
+      sig,
+      Config.STRIPE_WEBHOOK_SECRET
     );
+    if (event) {
+      response.send(200);
+    }
     if (event.type === 'charge.succeeded') {
-      return processChargeSucceeded(event.data, response);
+      return processChargeSucceeded(event.data);
     }
   });
 }
@@ -18,7 +26,7 @@ export function webhooks(graphQLServer: Express) {
   stripeWebhook(graphQLServer);
 }
 
-async function processChargeSucceeded(object: any, response: any) {
+async function processChargeSucceeded(object: any) {
   const { customer } = object;
   const { metadata } = await findCustomer(customer);
   const { publicAddress } = metadata;
@@ -30,7 +38,6 @@ async function processChargeSucceeded(object: any, response: any) {
     console.error('error sending subscription tokens', e);
     throw e;
   }
-  response.send(200);
 }
 
 // async function processSubscriptionCreated(object: any, response: any) {

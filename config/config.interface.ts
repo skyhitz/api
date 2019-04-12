@@ -18,6 +18,7 @@ export interface IConfig {
   STRIPE_SECRET_KEY: string;
   STRIPE_CONNECT_CLIENT_ID: string;
   STRIPE_PLAN_ID: string;
+  STRIPE_WEBHOOK_SECRET: string;
   ISSUER_ID: string;
   ISSUER_SEED: string;
   YOUTUBE_API_CLIENT_ID: string;
