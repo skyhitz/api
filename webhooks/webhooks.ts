@@ -7,15 +7,12 @@ import { Config } from '../config/index';
 function stripeWebhook(graphQLServer: Express) {
   graphQLServer.post('/stripe-webhooks', (request: any, response) => {
     let sig = request.headers['stripe-signature'];
-    console.log(request);
-    console.log(Config.STRIPE_WEBHOOK_SECRET);
 
     const event = stripe.webhooks.constructEvent(
       request.rawBody,
       sig,
       Config.STRIPE_WEBHOOK_SECRET
     );
-    console.log(event);
     if (event) {
       response.send(200);
     }
@@ -30,10 +27,12 @@ export function webhooks(graphQLServer: Express) {
 }
 
 async function processChargeSucceeded(object: any) {
-  console.log('event data', object);
-  const { customer } = object;
-  const { metadata } = await findCustomer(customer);
+  const { receipt_email } = object;
+  const { metadata } = await findCustomer(receipt_email);
   const { publicAddress } = metadata;
+  if (!publicAddress) {
+    return;
+  }
   try {
     console.log('sending subscription tokens', publicAddress);
     // $6.99 plan gives the user 100 credits

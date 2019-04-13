@@ -6,13 +6,13 @@ export const stripe = new Stripe(Config.STRIPE_SECRET_KEY);
 export async function updateCustomer({
   customerId,
   publicAddress,
-  seed
+  seed,
 }: UpdateCustomerPayload) {
   return stripe.customers.update(customerId, {
     metadata: {
       publicAddress: publicAddress,
-      seed: seed
-    }
+      seed: seed,
+    },
   });
 }
 
@@ -23,14 +23,14 @@ export async function createCustomer({ email, cardToken }: CustomerPayload) {
   }
   return stripe.customers.create({
     email: email,
-    source: cardToken
+    source: cardToken,
   });
 }
 
 export async function findCustomer(email: string) {
   let match = await stripe.customers.list({
     limit: 1,
-    email: email
+    email: email,
   });
 
   return match.data ? match.data[0] : null;
@@ -40,7 +40,7 @@ export async function findSubscription(customerId: string) {
   let match = await stripe.subscriptions.list({
     limit: 1,
     customer: customerId,
-    plan: Config.STRIPE_PLAN_ID
+    plan: Config.STRIPE_PLAN_ID,
   });
 
   return match.data[0];
@@ -48,7 +48,7 @@ export async function findSubscription(customerId: string) {
 
 export async function createCustomerAndStartSubscription({
   email,
-  cardToken
+  cardToken,
 }: CustomerPayload) {
   let customerId;
   try {
@@ -63,9 +63,9 @@ export async function createCustomerAndStartSubscription({
     customer: customerId,
     items: [
       {
-        plan: Config.STRIPE_PLAN_ID
-      }
-    ]
+        plan: Config.STRIPE_PLAN_ID,
+      },
+    ],
   });
   return customerId;
 }
