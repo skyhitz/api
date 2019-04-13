@@ -27,6 +27,7 @@ export function webhooks(graphQLServer: Express) {
 }
 
 async function processChargeSucceeded(object: any) {
+  console.log('event data', object);
   const { customer } = object;
   const { metadata } = await findCustomer(customer);
   const { publicAddress } = metadata;
