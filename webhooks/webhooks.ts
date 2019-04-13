@@ -3,25 +3,28 @@ import { stripe } from '../payments/stripe';
 import { sendSubscriptionTokens } from '../payments/stellar';
 import { findCustomer } from '../payments/stripe';
 import { Config } from '../config/index';
+import * as BodyParser from 'body-parser';
 
 function stripeWebhook(graphQLServer: Express) {
-  graphQLServer.post('/stripe/webhooks', (request, response) => {
-    let sig = request.headers['stripe-signature'];
-    console.log(request);
-    console.log(Config.STRIPE_WEBHOOK_SECRET);
+  graphQLServer
+    .use(BodyParser.raw({ type: '*/*' }))
+    .post('/stripe/webhooks', (request, response) => {
+      let sig = request.headers['stripe-signature'];
+      console.log(request);
+      console.log(Config.STRIPE_WEBHOOK_SECRET);
 
-    const event = stripe.webhooks.constructEvent(
-      request.body.toString(),
-      sig,
-      Config.STRIPE_WEBHOOK_SECRET
-    );
-    if (event) {
-      response.send(200);
-    }
-    if (event.type === 'charge.succeeded') {
-      return processChargeSucceeded(event.data);
-    }
-  });
+      const event = stripe.webhooks.constructEvent(
+        request.body.toString(),
+        sig,
+        Config.STRIPE_WEBHOOK_SECRET
+      );
+      if (event) {
+        response.send(200);
+      }
+      if (event.type === 'charge.succeeded') {
+        return processChargeSucceeded(event.data);
+      }
+    });
 }
 
 export function webhooks(graphQLServer: Express) {
