@@ -28,12 +28,12 @@ const buildOptions: any = async (req: any) => {
 const setupGraphQLServer = () => {
   const graphQLServer = Express();
 
-  graphQLServer.use(compression());
-  graphQLServer.use(cors(corsOptions));
-
   graphQLServer.use(
     '/graphql',
     BodyParser.json(),
+    BodyParser.urlencoded({ extended: false }),
+    compression(),
+    cors(corsOptions),
     jwt({
       secret: Config.JWT_SECRET,
       credentialsRequired: false,
