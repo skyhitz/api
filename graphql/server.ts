@@ -28,11 +28,16 @@ const buildOptions: any = async (req: any) => {
 const setupGraphQLServer = () => {
   const graphQLServer = Express();
 
-  webhooks(graphQLServer);
-
   graphQLServer.use(
     '/graphql',
-    BodyParser.json(),
+    BodyParser.json({
+      verify: (req: any, res, buf) => {
+        var url = req.originalUrl;
+        if (url.startsWith('/stripe-webhooks')) {
+          req.rawBody = buf.toString();
+        }
+      },
+    }),
     compression(),
     cors(corsOptions),
     jwt({
@@ -41,6 +46,8 @@ const setupGraphQLServer = () => {
     }),
     graphqlExpress(buildOptions)
   );
+
+  webhooks(graphQLServer);
 
   if (Config.ENV !== 'development') {
     /**
