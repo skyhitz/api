@@ -5,8 +5,10 @@ import { findCustomer } from '../payments/stripe';
 import { Config } from '../config/index';
 
 function stripeWebhook(graphQLServer: Express) {
-  graphQLServer.post('/stripe/webhooks', async (request, response) => {
+  graphQLServer.post('/stripe/webhooks', (request, response) => {
     let sig = request.headers['stripe-signature'];
+    console.log(request);
+    console.log(Config.STRIPE_WEBHOOK_SECRET);
 
     const event = stripe.webhooks.constructEvent(
       request.body,
