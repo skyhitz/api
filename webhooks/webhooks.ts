@@ -6,9 +6,10 @@ import { Config } from '../config/index';
 import * as BodyParser from 'body-parser';
 
 function stripeWebhook(graphQLServer: Express) {
-  graphQLServer
-    .use(BodyParser.raw({ type: '*/*' }))
-    .post('/stripe/webhooks', (request, response) => {
+  graphQLServer.post(
+    '/stripe/webhooks',
+    BodyParser.raw({ type: '*/*' }),
+    (request, response) => {
       let sig = request.headers['stripe-signature'];
       console.log(request);
       console.log(Config.STRIPE_WEBHOOK_SECRET);
@@ -24,7 +25,8 @@ function stripeWebhook(graphQLServer: Express) {
       if (event.type === 'charge.succeeded') {
         return processChargeSucceeded(event.data);
       }
-    });
+    }
+  );
 }
 
 export function webhooks(graphQLServer: Express) {

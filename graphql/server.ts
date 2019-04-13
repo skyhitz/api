@@ -28,6 +28,8 @@ const buildOptions: any = async (req: any) => {
 const setupGraphQLServer = () => {
   const graphQLServer = Express();
 
+  webhooks(graphQLServer);
+
   graphQLServer.use(
     '/graphql',
     BodyParser.json(),
@@ -59,8 +61,6 @@ const setupGraphQLServer = () => {
 };
 
 const graphQLServer = setupGraphQLServer();
-
-webhooks(graphQLServer);
 
 if (Config.ENV === 'development') {
   graphQLServer.listen(3000);
