@@ -35,7 +35,7 @@ async function processChargeSucceeded(object: any) {
   const { metadata } = await findCustomer(customer);
   const { publicAddress } = metadata;
   try {
-    console.log('sending subscription tokens');
+    console.log('sending subscription tokens', publicAddress);
     // $6.99 plan gives the user 100 credits
     await sendSubscriptionTokens(publicAddress, 100);
   } catch (e) {
