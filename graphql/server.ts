@@ -33,7 +33,6 @@ const setupGraphQLServer = () => {
   graphQLServer.use(
     '/graphql',
     BodyParser.json(),
-    BodyParser.urlencoded({ extended: false }),
     compression(),
     cors(corsOptions),
     jwt({
