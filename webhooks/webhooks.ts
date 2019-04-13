@@ -11,7 +11,7 @@ function stripeWebhook(graphQLServer: Express) {
     console.log(Config.STRIPE_WEBHOOK_SECRET);
 
     const event = stripe.webhooks.constructEvent(
-      request.body,
+      request.body.toString(),
       sig,
       Config.STRIPE_WEBHOOK_SECRET
     );
