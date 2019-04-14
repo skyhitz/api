@@ -12,7 +12,7 @@ export async function subscribe(customer: CustomerPayload) {
   let customerId: string;
   try {
     customerId = await createOrFindCustomer(customer);
-    console.log('created customer and started subsription');
+    console.log('created customer');
   } catch (e) {
     throw e;
   }
