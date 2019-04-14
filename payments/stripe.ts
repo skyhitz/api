@@ -46,7 +46,7 @@ export async function findSubscription(customerId: string) {
   return match.data[0];
 }
 
-export async function createCustomerAndStartSubscription({
+export async function createOrFindCustomer({
   email,
   cardToken,
 }: CustomerPayload) {
@@ -59,6 +59,10 @@ export async function createCustomerAndStartSubscription({
     customerId = id;
   }
 
+  return customerId;
+}
+
+export async function startSubscription(customerId: string) {
   await stripe.subscriptions.create({
     customer: customerId,
     items: [

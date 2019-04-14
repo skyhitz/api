@@ -1,8 +1,9 @@
 import { CustomerPayload } from './types';
 import {
-  createCustomerAndStartSubscription,
   updateCustomer,
   cancelSubscription,
+  createOrFindCustomer,
+  startSubscription,
 } from './stripe';
 import { createAndFundAccount, mergeAccount, allowTrust } from './stellar';
 
@@ -10,7 +11,7 @@ export async function subscribe(customer: CustomerPayload) {
   let keyPair: { secret: string; publicAddress: string };
   let customerId: string;
   try {
-    customerId = await createCustomerAndStartSubscription(customer);
+    customerId = await createOrFindCustomer(customer);
     console.log('created customer and started subsription');
   } catch (e) {
     throw e;
@@ -37,6 +38,14 @@ export async function subscribe(customer: CustomerPayload) {
       seed: keyPair.secret,
     });
     console.log('updated stripe customer with stellar info');
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+
+  try {
+    await startSubscription(customerId);
+    console.log('started subscription', customerId);
   } catch (e) {
     console.error(e);
     throw e;
