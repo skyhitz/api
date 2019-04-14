@@ -16,6 +16,7 @@ function stripeWebhook(graphQLServer: Express) {
     if (event) {
       response.send(200);
     }
+
     if (event.type === 'charge.succeeded') {
       return processChargeSucceeded(event.data);
     }
