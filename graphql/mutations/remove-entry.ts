@@ -4,6 +4,7 @@ import Database from '../../database';
 import { entriesIndex } from '../../algolia/algolia';
 import { cloudinary } from '../../cloudinary/cloudinary';
 import { deleteVideoFromYoutube } from '../../youtube/youtube-upload';
+const adminId = '-LbM3m6WKdVQAsY3zrAd';
 
 function deleteFromCloudinary(cloudinaryPublicId: string) {
   return new Promise((resolve, reject) => {
@@ -24,6 +25,17 @@ function deleteFromCloudinary(cloudinaryPublicId: string) {
   });
 }
 
+async function deleteAccount(entry: any, cloudinaryPublicId: any) {
+  [
+    await entry.destroy(),
+    await entriesIndex.deleteObject(entry.id),
+    await deleteFromCloudinary(cloudinaryPublicId),
+    await deleteVideoFromYoutube(entry.youtubeId),
+  ];
+
+  return true;
+}
+
 const removeEntry = {
   type: GraphQLBoolean,
   args: {
@@ -40,6 +52,10 @@ const removeEntry = {
       where: { id: id },
     });
 
+    if (user.id === adminId) {
+      return deleteAccount(entry, cloudinaryPublicId);
+    }
+
     try {
       const result = await entry.getEntryOwner();
       const ownerId = result[0].id;
@@ -50,14 +66,7 @@ const removeEntry = {
       return false;
     }
 
-    [
-      await entry.destroy(),
-      await entriesIndex.deleteObject(id),
-      await deleteFromCloudinary(cloudinaryPublicId),
-      await deleteVideoFromYoutube(entry.youtubeId),
-    ];
-
-    return true;
+    return deleteAccount(entry, cloudinaryPublicId);
   },
 };
 
