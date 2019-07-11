@@ -26,12 +26,17 @@ function deleteFromCloudinary(cloudinaryPublicId: string) {
 }
 
 async function deleteAccount(entry: any, cloudinaryPublicId: any) {
-  [
-    await entry.destroy(),
-    await entriesIndex.deleteObject(entry.id),
-    await deleteFromCloudinary(cloudinaryPublicId),
-    await deleteVideoFromYoutube(entry.youtubeId),
-  ];
+  try {
+    [
+      await entry.destroy(),
+      await entriesIndex.deleteObject(entry.id),
+      await deleteFromCloudinary(cloudinaryPublicId),
+      await deleteVideoFromYoutube(entry.youtubeId),
+    ];
+  } catch (e) {
+    console.log('error deleting entry:', e);
+    return false;
+  }
 
   return true;
 }
