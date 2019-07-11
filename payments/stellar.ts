@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import StellarSdkLibrary = require('stellar-sdk');
 import { Config } from '../config';
+export const BASE_FEE = 102; // stroops
 
 if (Config.ENV === 'production') {
   StellarSdkLibrary.Network.usePublicNetwork();
@@ -38,14 +39,17 @@ export async function fundAccount(destinationKey: string) {
     throw 'Account does not exist';
   }
   let sourceAccount = await stellarServer.loadAccount(sourceKeys.publicKey());
-  let transaction = new StellarSdk.TransactionBuilder(sourceAccount)
+  let transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: destinationKey,
         asset: XLM,
-        amount: '1.5'
+        amount: '1.5',
       })
     )
+    .setTimeout(30)
     .build();
   transaction.sign(sourceKeys);
   return stellarServer.submitTransaction(transaction);
@@ -63,7 +67,7 @@ export async function createAndFundTestStellarAccount() {
   }
   return {
     secret,
-    publicAddress
+    publicAddress,
   };
 }
 
@@ -78,7 +82,7 @@ export async function createAndFundPublicStellarAccount() {
   }
   return {
     secret,
-    publicAddress
+    publicAddress,
   };
 }
 
@@ -92,13 +96,16 @@ export async function createAndFundAccount() {
 export async function allowTrust(destinationSeed: string) {
   const destinationKeys = StellarSdk.Keypair.fromSecret(destinationSeed);
   const account = await stellarServer.loadAccount(destinationKeys.publicKey());
-  const transaction = new StellarSdk.TransactionBuilder(account)
+  const transaction = new StellarSdk.TransactionBuilder(account, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.changeTrust({
         asset,
-        limit: '10000000'
+        limit: '10000000',
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(destinationKeys);
@@ -110,14 +117,17 @@ export async function sendSubscriptionTokens(
   amount: number
 ) {
   const sourceAccount = await stellarServer.loadAccount(sourceKeys.publicKey());
-  const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
+  const transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: destinationKey,
         asset,
-        amount: amount.toString()
+        amount: amount.toString(),
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(sourceKeys);
@@ -133,25 +143,28 @@ export async function mergeAccount(accountSeed: string) {
       remainingCredits = balance.balance;
     }
   });
-  const transaction = new StellarSdk.TransactionBuilder(account)
+  const transaction = new StellarSdk.TransactionBuilder(account, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: sourceKeys.publicKey(),
         asset: asset,
-        amount: remainingCredits
+        amount: remainingCredits,
       })
     )
     .addOperation(
       StellarSdk.Operation.changeTrust({
         asset,
-        limit: '0'
+        limit: '0',
       })
     )
     .addOperation(
       StellarSdk.Operation.accountMerge({
-        destination: sourceKeys.publicKey()
+        destination: sourceKeys.publicKey(),
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(destinationKeys);
@@ -182,26 +195,28 @@ export async function payment(
   const sourcePublicKey = sourceKeypair.publicKey();
 
   let account = await stellarServer.loadAccount(sourcePublicKey);
-  let transaction = new StellarSdk.TransactionBuilder(account)
+  let transaction = new StellarSdk.TransactionBuilder(account, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: publicAddress,
         asset,
-        amount: amount.toString()
+        amount: amount.toString(),
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(sourceKeypair);
   let transactionResult = await stellarServer.submitTransaction(transaction);
-  console.log('\nSuccess! View the transaction at: ');
-  console.log(transactionResult._links.transaction.href);
+  console.log('\nSuccess! View the transaction at: ', transactionResult);
   return transactionResult;
 }
 
 export async function getUSDPrice() {
   let response = await stellarServer.orderbook(ANCHOR_USD, XLM).call();
-  return response.records[0].bids[0].price;
+  return response.bids[0].price;
 }
 
 export async function convertUSDtoXLM(USDAmount: number) {
@@ -219,20 +234,22 @@ export async function withdrawalFromAccount(seed: string, amount: number) {
   const sourcePublicKey = sourceKeypair.publicKey();
 
   let account = await stellarServer.loadAccount(sourcePublicKey);
-  let transaction = new StellarSdk.TransactionBuilder(account)
+  let transaction = new StellarSdk.TransactionBuilder(account, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: sourceKeys.publicKey(),
         asset,
-        amount: amount.toString()
+        amount: amount.toString(),
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(sourceKeypair);
   let transactionResult = await stellarServer.submitTransaction(transaction);
-  console.log('\nSuccess! View the transaction at: ');
-  console.log(transactionResult._links.transaction.href);
+  console.log('\nSuccess! View the transaction at: ', transactionResult);
   return transactionResult;
 }
 
@@ -240,19 +257,21 @@ export async function payUserInXLM(address: string, amount: number) {
   const sourcePublicKey = sourceKeys.publicKey();
 
   let account = await stellarServer.loadAccount(sourcePublicKey);
-  let transaction = new StellarSdk.TransactionBuilder(account)
+  let transaction = new StellarSdk.TransactionBuilder(account, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: address,
         asset: XLM,
-        amount: amount.toFixed(6).toString()
+        amount: amount.toFixed(6).toString(),
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(sourceKeys);
   let transactionResult = await stellarServer.submitTransaction(transaction);
-  console.log('\nSuccess! View the transaction at: ');
-  console.log(transactionResult._links.transaction.href);
+  console.log('\nSuccess! View the transaction at: ', transactionResult);
   return transactionResult;
 }
