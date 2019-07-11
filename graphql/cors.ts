@@ -2,7 +2,10 @@ import { Config } from '../config';
 
 let whitelist: string[];
 if (Config.ENV === 'production') {
-  whitelist = ['https://skyhitz.io'];
+  whitelist = [
+    'https://skyhitz.io',
+    'https://us-central1-skyhitz-161021.cloudfunctions.net',
+  ];
 } else {
   whitelist = [
     'https://skyhitz.io',
