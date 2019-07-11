@@ -7,10 +7,6 @@
   "scripts": {
     "dev": "NODE_ENV=development ts-node --inspect -F ./graphql/server.ts"
   },
-  "engineStrict": true,
-  "engines": {
-    "node": "8.15.0"
-  },
   "dependencies": {
     "@sendgrid/mail": "^6.1.4",
     "@types/algoliasearch": "^3.30.1",
