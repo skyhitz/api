@@ -24,6 +24,7 @@ export async function subscribe(customer: CustomerPayload) {
   }
 
   try {
+    console.log('allowing trust');
     await allowTrust(keyPair.secret);
     console.log('allowed trust');
   } catch (e) {
