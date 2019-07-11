@@ -194,8 +194,7 @@ export async function payment(
 
   transaction.sign(sourceKeypair);
   let transactionResult = await stellarServer.submitTransaction(transaction);
-  console.log('\nSuccess! View the transaction at: ');
-  console.log(transactionResult._links.self);
+  console.log('\nSuccess! View the transaction at: ', transactionResult);
   return transactionResult;
 }
 
@@ -231,8 +230,7 @@ export async function withdrawalFromAccount(seed: string, amount: number) {
 
   transaction.sign(sourceKeypair);
   let transactionResult = await stellarServer.submitTransaction(transaction);
-  console.log('\nSuccess! View the transaction at: ');
-  console.log(transactionResult._links.self);
+  console.log('\nSuccess! View the transaction at: ', transactionResult);
   return transactionResult;
 }
 
@@ -252,7 +250,6 @@ export async function payUserInXLM(address: string, amount: number) {
 
   transaction.sign(sourceKeys);
   let transactionResult = await stellarServer.submitTransaction(transaction);
-  console.log('\nSuccess! View the transaction at: ');
-  console.log(transactionResult._links.self);
+  console.log('\nSuccess! View the transaction at: ', transactionResult);
   return transactionResult;
 }
