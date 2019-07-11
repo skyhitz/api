@@ -43,7 +43,7 @@ export async function fundAccount(destinationKey: string) {
       StellarSdk.Operation.payment({
         destination: destinationKey,
         asset: XLM,
-        amount: '1.5'
+        amount: '1.5',
       })
     )
     .build();
@@ -63,7 +63,7 @@ export async function createAndFundTestStellarAccount() {
   }
   return {
     secret,
-    publicAddress
+    publicAddress,
   };
 }
 
@@ -78,7 +78,7 @@ export async function createAndFundPublicStellarAccount() {
   }
   return {
     secret,
-    publicAddress
+    publicAddress,
   };
 }
 
@@ -96,7 +96,7 @@ export async function allowTrust(destinationSeed: string) {
     .addOperation(
       StellarSdk.Operation.changeTrust({
         asset,
-        limit: '10000000'
+        limit: '10000000',
       })
     )
     .build();
@@ -115,7 +115,7 @@ export async function sendSubscriptionTokens(
       StellarSdk.Operation.payment({
         destination: destinationKey,
         asset,
-        amount: amount.toString()
+        amount: amount.toString(),
       })
     )
     .build();
@@ -138,18 +138,18 @@ export async function mergeAccount(accountSeed: string) {
       StellarSdk.Operation.payment({
         destination: sourceKeys.publicKey(),
         asset: asset,
-        amount: remainingCredits
+        amount: remainingCredits,
       })
     )
     .addOperation(
       StellarSdk.Operation.changeTrust({
         asset,
-        limit: '0'
+        limit: '0',
       })
     )
     .addOperation(
       StellarSdk.Operation.accountMerge({
-        destination: sourceKeys.publicKey()
+        destination: sourceKeys.publicKey(),
       })
     )
     .build();
@@ -187,7 +187,7 @@ export async function payment(
       StellarSdk.Operation.payment({
         destination: publicAddress,
         asset,
-        amount: amount.toString()
+        amount: amount.toString(),
       })
     )
     .build();
@@ -195,13 +195,13 @@ export async function payment(
   transaction.sign(sourceKeypair);
   let transactionResult = await stellarServer.submitTransaction(transaction);
   console.log('\nSuccess! View the transaction at: ');
-  console.log(transactionResult._links.transaction.href);
+  console.log(transactionResult._links.self);
   return transactionResult;
 }
 
 export async function getUSDPrice() {
   let response = await stellarServer.orderbook(ANCHOR_USD, XLM).call();
-  return response.records[0].bids[0].price;
+  return response.bids[0].price;
 }
 
 export async function convertUSDtoXLM(USDAmount: number) {
@@ -224,7 +224,7 @@ export async function withdrawalFromAccount(seed: string, amount: number) {
       StellarSdk.Operation.payment({
         destination: sourceKeys.publicKey(),
         asset,
-        amount: amount.toString()
+        amount: amount.toString(),
       })
     )
     .build();
@@ -232,7 +232,7 @@ export async function withdrawalFromAccount(seed: string, amount: number) {
   transaction.sign(sourceKeypair);
   let transactionResult = await stellarServer.submitTransaction(transaction);
   console.log('\nSuccess! View the transaction at: ');
-  console.log(transactionResult._links.transaction.href);
+  console.log(transactionResult._links.self);
   return transactionResult;
 }
 
@@ -245,7 +245,7 @@ export async function payUserInXLM(address: string, amount: number) {
       StellarSdk.Operation.payment({
         destination: address,
         asset: XLM,
-        amount: amount.toFixed(6).toString()
+        amount: amount.toFixed(6).toString(),
       })
     )
     .build();
@@ -253,6 +253,6 @@ export async function payUserInXLM(address: string, amount: number) {
   transaction.sign(sourceKeys);
   let transactionResult = await stellarServer.submitTransaction(transaction);
   console.log('\nSuccess! View the transaction at: ');
-  console.log(transactionResult._links.transaction.href);
+  console.log(transactionResult._links.self);
   return transactionResult;
 }
