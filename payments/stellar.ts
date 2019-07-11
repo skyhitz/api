@@ -49,6 +49,7 @@ export async function fundAccount(destinationKey: string) {
         amount: '1.5',
       })
     )
+    .setTimeout(30)
     .build();
   transaction.sign(sourceKeys);
   return stellarServer.submitTransaction(transaction);
@@ -104,6 +105,7 @@ export async function allowTrust(destinationSeed: string) {
         limit: '10000000',
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(destinationKeys);
@@ -125,6 +127,7 @@ export async function sendSubscriptionTokens(
         amount: amount.toString(),
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(sourceKeys);
@@ -161,6 +164,7 @@ export async function mergeAccount(accountSeed: string) {
         destination: sourceKeys.publicKey(),
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(destinationKeys);
@@ -201,6 +205,7 @@ export async function payment(
         amount: amount.toString(),
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(sourceKeypair);
@@ -239,6 +244,7 @@ export async function withdrawalFromAccount(seed: string, amount: number) {
         amount: amount.toString(),
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(sourceKeypair);
@@ -261,6 +267,7 @@ export async function payUserInXLM(address: string, amount: number) {
         amount: amount.toFixed(6).toString(),
       })
     )
+    .setTimeout(30)
     .build();
 
   transaction.sign(sourceKeys);
