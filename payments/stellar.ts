@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import StellarSdkLibrary = require('stellar-sdk');
 import { Config } from '../config';
+export const BASE_FEE = 102; // stroops
 
 if (Config.ENV === 'production') {
   StellarSdkLibrary.Network.usePublicNetwork();
@@ -38,7 +39,9 @@ export async function fundAccount(destinationKey: string) {
     throw 'Account does not exist';
   }
   let sourceAccount = await stellarServer.loadAccount(sourceKeys.publicKey());
-  let transaction = new StellarSdk.TransactionBuilder(sourceAccount)
+  let transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: destinationKey,
@@ -92,7 +95,9 @@ export async function createAndFundAccount() {
 export async function allowTrust(destinationSeed: string) {
   const destinationKeys = StellarSdk.Keypair.fromSecret(destinationSeed);
   const account = await stellarServer.loadAccount(destinationKeys.publicKey());
-  const transaction = new StellarSdk.TransactionBuilder(account)
+  const transaction = new StellarSdk.TransactionBuilder(account, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.changeTrust({
         asset,
@@ -110,7 +115,9 @@ export async function sendSubscriptionTokens(
   amount: number
 ) {
   const sourceAccount = await stellarServer.loadAccount(sourceKeys.publicKey());
-  const transaction = new StellarSdk.TransactionBuilder(sourceAccount)
+  const transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: destinationKey,
@@ -133,7 +140,9 @@ export async function mergeAccount(accountSeed: string) {
       remainingCredits = balance.balance;
     }
   });
-  const transaction = new StellarSdk.TransactionBuilder(account)
+  const transaction = new StellarSdk.TransactionBuilder(account, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: sourceKeys.publicKey(),
@@ -182,7 +191,9 @@ export async function payment(
   const sourcePublicKey = sourceKeypair.publicKey();
 
   let account = await stellarServer.loadAccount(sourcePublicKey);
-  let transaction = new StellarSdk.TransactionBuilder(account)
+  let transaction = new StellarSdk.TransactionBuilder(account, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: publicAddress,
@@ -218,7 +229,9 @@ export async function withdrawalFromAccount(seed: string, amount: number) {
   const sourcePublicKey = sourceKeypair.publicKey();
 
   let account = await stellarServer.loadAccount(sourcePublicKey);
-  let transaction = new StellarSdk.TransactionBuilder(account)
+  let transaction = new StellarSdk.TransactionBuilder(account, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: sourceKeys.publicKey(),
@@ -238,7 +251,9 @@ export async function payUserInXLM(address: string, amount: number) {
   const sourcePublicKey = sourceKeys.publicKey();
 
   let account = await stellarServer.loadAccount(sourcePublicKey);
-  let transaction = new StellarSdk.TransactionBuilder(account)
+  let transaction = new StellarSdk.TransactionBuilder(account, {
+    fee: BASE_FEE,
+  })
     .addOperation(
       StellarSdk.Operation.payment({
         destination: address,
