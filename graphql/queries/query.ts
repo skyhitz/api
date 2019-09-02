@@ -6,6 +6,7 @@ import RecentUserSearches from './recent-user-searches';
 import Entries from './entries';
 import TopEntrySearches from './top-entry-searches';
 import RecentEntrySearches from './recent-entry-searches';
+import RecentlyAdded from './recently-added';
 import AuthenticatedUser from './authenticated-user';
 import UserLikes from './user-likes';
 import EntryLikes from './entry-likes';
@@ -25,15 +26,16 @@ const Query = new GraphQLObjectType({
       entries: Entries,
       topEntrySearches: TopEntrySearches,
       recentEntrySearches: RecentEntrySearches,
+      recentlyAdded: RecentlyAdded,
       authenticatedUser: AuthenticatedUser,
       userLikes: UserLikes,
       entryLikes: EntryLikes,
       userPlaylists: UserPlaylists,
       paymentsInfo: PaymentsInfo,
       hasCreditFromUser: HasCreditFromUser,
-      canCreditEntry: CanCreditEntry
+      canCreditEntry: CanCreditEntry,
     };
-  }
+  },
 });
 
 export default Query;
