@@ -11,17 +11,17 @@ const ConfirmUsernameAndEmail = {
   type: User,
   args: {
     username: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: new GraphQLNonNull(GraphQLString),
     },
     email: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: new GraphQLNonNull(GraphQLString),
     },
     token: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: new GraphQLNonNull(GraphQLString),
     },
     testing: {
-      type: new GraphQLNonNull(GraphQLBoolean)
-    }
+      type: new GraphQLNonNull(GraphQLBoolean),
+    },
   },
   async resolve(_: any, { username, email, token, testing }: any, ctx: any) {
     const response = await fetch(
@@ -32,9 +32,7 @@ const ConfirmUsernameAndEmail = {
     if (facebookProfile) {
       let user;
       let userPayload: any = {
-        avatarUrl: `https://res.cloudinary.com/skyhitz/image/facebook/${
-          facebookProfile.id
-        }.jpg`,
+        avatarUrl: `https://res.cloudinary.com/skyhitz/image/facebook/${facebookProfile.id}.jpg`,
         displayName: facebookProfile.name,
         description: null,
         email: email,
@@ -48,7 +46,7 @@ const ConfirmUsernameAndEmail = {
         publishedAt: new Date().toISOString(),
         publishedAtTimestamp: Math.floor(new Date().getTime() / 1000),
         phone: null,
-        testing: testing ? true : false
+        testing: testing ? true : false,
       };
       try {
         user = await Database.models.user.create(userPayload);
@@ -82,20 +80,20 @@ const ConfirmUsernameAndEmail = {
         displayName: userPayload.displayName,
         description: null,
         reputation: 0,
-        username: userPayload.username,
+        username: userPayload.username.toLowerCase(),
         id: userPayload.id,
         userType: userPayload.userType,
         publishedAt: userPayload.publishedAt,
         publishedAtTimestamp: userPayload.publishedAtTimestamp,
         objectID: userPayload.id,
-        testing: userPayload.testing
+        testing: userPayload.testing,
       };
       await usersIndex.partialUpdateObject(userIndexObject);
       return user;
     }
 
     throw 'Could not sign in with facebook.';
-  }
+  },
 };
 
 export default ConfirmUsernameAndEmail;

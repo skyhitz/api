@@ -7,23 +7,23 @@ const updateUser = {
   type: User,
   args: {
     avatarUrl: {
-      type: GraphQLString
+      type: GraphQLString,
     },
     displayName: {
-      type: GraphQLString
+      type: GraphQLString,
     },
     description: {
-      type: GraphQLString
+      type: GraphQLString,
     },
     username: {
-      type: GraphQLString
+      type: GraphQLString,
     },
     email: {
-      type: GraphQLString
+      type: GraphQLString,
     },
     phone: {
-      type: GraphQLString
-    }
+      type: GraphQLString,
+    },
   },
   async resolve(
     _: any,
@@ -38,7 +38,7 @@ const updateUser = {
     }
     user.displayName = displayName;
     user.description = description;
-    user.username = username;
+    user.username = username.toLowerCase();
     user.email = email;
     user.phone = phone;
     let userIndexObject: any = {
@@ -52,11 +52,11 @@ const updateUser = {
       publishedAt: user.publishedAt,
       publishedAtTimestamp: user.publishedAtTimestamp,
       objectID: user.id,
-      testing: user.testing
+      testing: user.testing,
     };
     [await user.save(), await usersIndex.partialUpdateObject(userIndexObject)];
     return user;
-  }
+  },
 };
 
 export default updateUser;
