@@ -11,7 +11,7 @@ export interface EntryAttribute {
   publishedAtTimestamp: number;
   publishedAt: string;
   price: number;
-  forSale: number;
+  forSale: boolean;
 }
 
 export interface EntryInstance
@@ -60,7 +60,7 @@ export const EntryType = {
     allowNull: false,
   },
   price: {
-    type: Sequelize.NUMBER,
+    type: Sequelize.INTEGER,
   },
   forSale: {
     type: Sequelize.BOOLEAN,
