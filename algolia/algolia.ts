@@ -6,6 +6,23 @@ const client = algoliasearch(
 );
 export const entriesIndex = client.initIndex('entries');
 entriesIndex.setSettings({
-  searchableAttributes: ['title,userDisplayName', 'description', 'userUsername']
+  searchableAttributes: [
+    'title,userDisplayName',
+    'description',
+    'userUsername',
+  ],
 });
 export const usersIndex = client.initIndex('users');
+
+// Always pass objectID
+export async function saveEntryObject(obj: any) {
+  return new Promise((resolve, reject) => {
+    entriesIndex.saveObject(obj, (err: any, content: any) => {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(content);
+    });
+  });
+}
