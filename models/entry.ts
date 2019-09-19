@@ -10,6 +10,8 @@ export interface EntryAttribute {
   id: string;
   publishedAtTimestamp: number;
   publishedAt: string;
+  price: number;
+  forSale: number;
 }
 
 export interface EntryInstance
@@ -56,5 +58,11 @@ export const EntryType = {
   publishedAt: {
     type: Sequelize.STRING,
     allowNull: false,
+  },
+  price: {
+    type: Sequelize.NUMBER,
+  },
+  forSale: {
+    type: Sequelize.BOOLEAN,
   },
 };
