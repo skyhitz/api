@@ -20,6 +20,7 @@ import SyncAlgoliaUsers from './sync-algolia-users';
 import CreditEntry from './credit-entry';
 import WithdrawToExternalWallet from './withdraw-to-external-wallet';
 import YoutubeUpload from './youtube-upload';
+import UpdatePricing from './update-pricing';
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -43,6 +44,7 @@ const Mutation = new GraphQLObjectType({
       subscribeUser: SubscribeUser,
       cancelSubscription: CancelSubscription,
       removeEntry: RemoveEntry,
+      updatePricing: UpdatePricing,
       updateAlgoliaEntriesWithUser: UpdateAlgoliaEntriesWithUser,
       syncAlgoliaUsers: SyncAlgoliaUsers,
       withdrawToExternalWallet: WithdrawToExternalWallet,
