@@ -15,9 +15,9 @@ entriesIndex.setSettings({
 export const usersIndex = client.initIndex('users');
 
 // Always pass objectID
-export async function saveEntryObject(obj: any) {
+export async function partialUpdateObject(obj: any) {
   return new Promise((resolve, reject) => {
-    entriesIndex.saveObject(obj, (err: any, content: any) => {
+    entriesIndex.partialUpdateObject(obj, (err: any, content: any) => {
       if (err) {
         return reject(err);
       }

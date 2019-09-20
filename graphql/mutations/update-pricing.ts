@@ -6,7 +6,7 @@ import {
 } from 'graphql';
 import Database from '../../database';
 import { getAuthenticatedUser } from '../../auth/logic';
-import { saveEntryObject } from '../../algolia/algolia';
+import { partialUpdateObject } from '../../algolia/algolia';
 
 const updatePricing = {
   type: GraphQLBoolean,
@@ -41,7 +41,7 @@ const updatePricing = {
     entry.forSale = forSale;
     [
       await entry.save(),
-      await saveEntryObject({
+      await partialUpdateObject({
         objectID: entry.id,
         price: entry.price,
         forSale: entry.forSale,
