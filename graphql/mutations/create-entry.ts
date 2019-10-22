@@ -1,4 +1,9 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import {
+  GraphQLString,
+  GraphQLNonNull,
+  GraphQLBoolean,
+  GraphQLInt,
+} from 'graphql';
 import Database from '../../database';
 import Entry from '../types/entry';
 import { getAuthenticatedUser } from '../../auth/logic';
@@ -25,10 +30,25 @@ const createEntry = {
     id: {
       type: new GraphQLNonNull(GraphQLString),
     },
+    forSale: {
+      type: new GraphQLNonNull(GraphQLBoolean),
+    },
+    price: {
+      type: new GraphQLNonNull(GraphQLInt),
+    },
   },
   async resolve(_: any, args: any, ctx: any) {
     let user = await getAuthenticatedUser(ctx);
-    let { etag, imageUrl, description, title, videoUrl, id } = args;
+    let {
+      etag,
+      imageUrl,
+      description,
+      title,
+      videoUrl,
+      id,
+      forSale,
+      price,
+    } = args;
     let entry = {
       id: id,
       etag: etag,
@@ -38,6 +58,8 @@ const createEntry = {
       videoUrl: videoUrl,
       publishedAt: new Date().toISOString(),
       publishedAtTimestamp: Math.floor(new Date().getTime() / 1000),
+      forSale: forSale,
+      price: price,
     };
 
     let createdEntry = await Database.models.entry.create(entry);
@@ -48,7 +70,7 @@ const createEntry = {
     entryIndex.testing = user.testing;
     [
       await createdEntry.addEntryOwner(user.id),
-      await entriesIndex.addObject(entry),
+      await entriesIndex.addObject(entryIndex),
     ];
   },
 };
