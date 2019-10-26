@@ -5,6 +5,13 @@ import { findCustomer } from '../../payments/stripe';
 import { accountCredits, payment } from '../../payments/stellar';
 import { partialUpdateObject } from '../../algolia/algolia';
 
+async function customerInfo(user: any) {
+  let customer = await findCustomer(user.email);
+  let credits = await accountCredits(customer.metadata.publicAddress);
+  let userSeed = customer.metadata.seed;
+  return { credits, userSeed };
+}
+
 const buyEntry = {
   type: GraphQLBoolean,
   args: {
@@ -15,13 +22,14 @@ const buyEntry = {
   async resolve(_: any, args: any, ctx: any) {
     let { id } = args;
     let user = await getAuthenticatedUser(ctx);
-    let customer = await findCustomer(user.email);
-    let credits = await accountCredits(customer.metadata.publicAddress);
-    let userSeed = customer.metadata.seed;
-    let entry = await Database.models.entry.findOne({
-      where: { id: id },
-      include: [{ model: Database.models.user, as: 'EntryOwner' }],
-    });
+
+    let [{ credits, userSeed }, entry] = [
+      await customerInfo(user),
+      await Database.models.entry.findOne({
+        where: { id: id },
+        include: [{ model: Database.models.user, as: 'EntryOwner' }],
+      }),
+    ];
     let entryOwner;
 
     if (
