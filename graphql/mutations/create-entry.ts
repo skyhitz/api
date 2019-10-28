@@ -24,6 +24,9 @@ const createEntry = {
     title: {
       type: new GraphQLNonNull(GraphQLString),
     },
+    artist: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
     videoUrl: {
       type: new GraphQLNonNull(GraphQLString),
     },
@@ -44,6 +47,7 @@ const createEntry = {
       imageUrl,
       description,
       title,
+      artist,
       videoUrl,
       id,
       forSale,
@@ -55,6 +59,7 @@ const createEntry = {
       imageUrl: imageUrl,
       description: description,
       title: title,
+      artist: artist,
       videoUrl: videoUrl,
       publishedAt: new Date().toISOString(),
       publishedAtTimestamp: Math.floor(new Date().getTime() / 1000),

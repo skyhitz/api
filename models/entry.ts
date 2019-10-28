@@ -45,6 +45,10 @@ export const EntryType = {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  artist: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   id: {
     type: Sequelize.STRING,
     allowNull: false,
