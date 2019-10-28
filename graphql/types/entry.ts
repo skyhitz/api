@@ -54,6 +54,12 @@ const Entry: GraphQLObjectType = new GraphQLObjectType({
           return entry.price;
         },
       },
+      artist: {
+        type: GraphQLString,
+        resolve(entry: any) {
+          return entry.artist;
+        },
+      },
       userDisplayName: {
         type: GraphQLString,
         async resolve(entry: any) {
