@@ -64,7 +64,8 @@ const buyEntry = {
 
     entry.forSale = false;
     [
-      await entry.setEntryOwners([user.id]),
+      await entry.removeEntryOwner(entryOwner.id),
+      await entry.addEntryOwner(user.id),
       await entry.save(),
       await partialUpdateObject({
         objectID: entry.id,
