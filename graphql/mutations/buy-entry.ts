@@ -6,6 +6,7 @@ import {
   accountCredits,
   payment,
   createAndFundAccount,
+  allowTrust,
 } from '../../payments/stellar';
 import { partialUpdateObject } from '../../algolia/algolia';
 
@@ -28,11 +29,15 @@ async function checkIfEntryOwnerHasStripeAccount(email: string) {
       throw 'could not create and fund stellar account';
     }
     try {
-      newCustomer = await createCustomerWithEmail(
-        email,
-        keyPairNewAcct.publicAddress,
-        keyPairNewAcct.secret
-      );
+      let [, newCus] = [
+        await allowTrust(keyPairNewAcct.secret),
+        await createCustomerWithEmail(
+          email,
+          keyPairNewAcct.publicAddress,
+          keyPairNewAcct.secret
+        ),
+      ];
+      newCustomer = newCus;
     } catch (e) {
       throw 'could not create stripe customer';
     }
