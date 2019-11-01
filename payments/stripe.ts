@@ -16,6 +16,12 @@ export async function updateCustomer({
   });
 }
 
+export async function updateSource(customerId: string, source: string) {
+  return stripe.customers.update(customerId, {
+    source: source,
+  });
+}
+
 export async function createCustomer({ email, cardToken }: CustomerPayload) {
   let customer = await findCustomer(email);
   if (customer && customer.id) {
@@ -74,7 +80,10 @@ export async function createOrFindCustomer({
     customerId = id;
   } catch (e) {
     // check if the customer has cardToken, add cardToken
-    let { id } = await findCustomer(email);
+    let { id, default_source } = await findCustomer(email);
+    if (!!id && !default_source) {
+      await updateSource(id, cardToken);
+    }
     customerId = id;
   }
 
