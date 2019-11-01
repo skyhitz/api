@@ -27,6 +27,24 @@ export async function createCustomer({ email, cardToken }: CustomerPayload) {
   });
 }
 
+export async function createCustomerWithEmail(
+  email: string,
+  publicAddress: string,
+  seed: string
+) {
+  let customer = await findCustomer(email);
+  if (customer && customer.id) {
+    throw 'customer already exists';
+  }
+  return stripe.customers.create({
+    email: email,
+    metadata: {
+      publicAddress: publicAddress,
+      seed: seed,
+    },
+  });
+}
+
 export async function findCustomer(email: string) {
   let match = await stripe.customers.list({
     limit: 1,
@@ -55,6 +73,7 @@ export async function createOrFindCustomer({
     let { id } = await createCustomer({ email, cardToken });
     customerId = id;
   } catch (e) {
+    // check if the customer has cardToken, add cardToken
     let { id } = await findCustomer(email);
     customerId = id;
   }
