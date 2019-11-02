@@ -1,13 +1,8 @@
 import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
 import Database from '../../database';
 import { getAuthenticatedUser } from '../../auth/logic';
-import { findCustomer, createCustomerWithEmail } from '../../payments/stripe';
-import {
-  accountCredits,
-  payment,
-  createAndFundAccount,
-  allowTrust,
-} from '../../payments/stellar';
+import { findCustomer } from '../../payments/stripe';
+import { accountCredits, payment } from '../../payments/stellar';
 import { partialUpdateObject } from '../../algolia/algolia';
 
 async function customerInfo(user: any) {
@@ -15,38 +10,6 @@ async function customerInfo(user: any) {
   let credits = await accountCredits(customer.metadata.publicAddress);
   let userSeed = customer.metadata.seed;
   return { credits, userSeed };
-}
-
-async function checkIfEntryOwnerHasStripeAccount(email: string) {
-  let entryOwnerCustomer = await findCustomer(email);
-
-  if (!entryOwnerCustomer) {
-    let newCustomer;
-    let keyPairNewAcct;
-    try {
-      keyPairNewAcct = await createAndFundAccount();
-    } catch (e) {
-      throw 'could not create and fund stellar account';
-    }
-    try {
-      let [, newCus] = [
-        await allowTrust(keyPairNewAcct.secret),
-        await createCustomerWithEmail(
-          email,
-          keyPairNewAcct.publicAddress,
-          keyPairNewAcct.secret
-        ),
-      ];
-      newCustomer = newCus;
-    } catch (e) {
-      throw 'could not create stripe customer';
-    }
-    return newCustomer.metadata.publicAddress;
-  }
-
-  let { metadata } = entryOwnerCustomer;
-  let { publicAddress } = metadata;
-  return publicAddress;
 }
 
 const buyEntry = {
@@ -79,7 +42,9 @@ const buyEntry = {
       throw 'no entry owner';
     }
 
-    let publicAddress = await checkIfEntryOwnerHasStripeAccount(entryOwner);
+    let entryOwnerCustomer = await findCustomer(entryOwner.email);
+    let { metadata } = entryOwnerCustomer;
+    let { publicAddress } = metadata;
 
     if (credits >= entry.price) {
       // send payment from buyer to owner of entry
