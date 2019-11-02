@@ -4,6 +4,8 @@ import {
   cancelSubscription,
   createOrFindCustomer,
   startSubscription,
+  findCustomer,
+  createCustomerWithEmail,
 } from './stripe';
 import { createAndFundAccount, mergeAccount, allowTrust } from './stellar';
 
@@ -56,4 +58,36 @@ export async function subscribe(customer: CustomerPayload) {
 export async function cancel(email: string) {
   let { seed } = await cancelSubscription(email);
   await mergeAccount(seed);
+}
+
+export async function checkIfEntryOwnerHasStripeAccount(email: string) {
+  let entryOwnerCustomer = await findCustomer(email);
+
+  if (!entryOwnerCustomer) {
+    let newCustomer;
+    let keyPairNewAcct;
+    try {
+      keyPairNewAcct = await createAndFundAccount();
+    } catch (e) {
+      throw 'could not create and fund stellar account';
+    }
+    try {
+      let [, newCus] = [
+        await allowTrust(keyPairNewAcct.secret),
+        await createCustomerWithEmail(
+          email,
+          keyPairNewAcct.publicAddress,
+          keyPairNewAcct.secret
+        ),
+      ];
+      newCustomer = newCus;
+    } catch (e) {
+      throw 'could not create stripe customer';
+    }
+    return newCustomer.metadata.publicAddress;
+  }
+
+  let { metadata } = entryOwnerCustomer;
+  let { publicAddress } = metadata;
+  return publicAddress;
 }

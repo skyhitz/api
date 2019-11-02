@@ -8,6 +8,7 @@ import Database from '../../database';
 import Entry from '../types/entry';
 import { getAuthenticatedUser } from '../../auth/logic';
 import { entriesIndex } from '../../algolia/algolia';
+import { checkIfEntryOwnerHasStripeAccount } from 'payments/subscription';
 
 const createEntry = {
   type: Entry,
@@ -68,6 +69,11 @@ const createEntry = {
     };
 
     let createdEntry = await Database.models.entry.create(entry);
+
+    if (entry.forSale) {
+      await checkIfEntryOwnerHasStripeAccount(user.email);
+    }
+
     let entryIndex: any = entry;
     entryIndex.userDisplayName = user.displayName;
     entryIndex.userUsername = user.username;
