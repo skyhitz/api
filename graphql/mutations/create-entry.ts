@@ -8,7 +8,7 @@ import Database from '../../database';
 import Entry from '../types/entry';
 import { getAuthenticatedUser } from '../../auth/logic';
 import { entriesIndex } from '../../algolia/algolia';
-import { checkIfEntryOwnerHasStripeAccount } from 'payments/subscription';
+import { checkIfEntryOwnerHasStripeAccount } from '../../payments/subscription';
 
 const createEntry = {
   type: Entry,
