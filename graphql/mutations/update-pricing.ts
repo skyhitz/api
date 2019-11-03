@@ -7,6 +7,7 @@ import {
 import Database from '../../database';
 import { getAuthenticatedUser } from '../../auth/logic';
 import { partialUpdateObject } from '../../algolia/algolia';
+import { checkIfEntryOwnerHasStripeAccount } from '../../payments/subscription';
 
 const updatePricing = {
   type: GraphQLBoolean,
@@ -35,6 +36,10 @@ const updatePricing = {
       }
     } catch (e) {
       return false;
+    }
+
+    if (entry.forSale) {
+      await checkIfEntryOwnerHasStripeAccount(user.email);
     }
 
     entry.price = price;
