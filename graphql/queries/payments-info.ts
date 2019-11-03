@@ -13,24 +13,33 @@ const PaymentsInfo = {
     } catch (e) {
       return {
         subscribed: false,
-        credits: 0
+        credits: 0,
       };
     }
 
     try {
       customer = await findCustomer(user.email);
       let credits = await accountCredits(customer.metadata.publicAddress);
+
+      let subscriptions = customer.subscriptions.data;
+
+      if (subscriptions.length > 0) {
+        return {
+          subscribed: true,
+          credits: credits,
+        };
+      }
       return {
-        subscribed: true,
-        credits: credits
+        subscribed: false,
+        credits: credits,
       };
     } catch (e) {
       return {
         subscribed: false,
-        credits: 0
+        credits: 0,
       };
     }
-  }
+  },
 };
 
 export default PaymentsInfo;
