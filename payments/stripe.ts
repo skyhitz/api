@@ -74,20 +74,18 @@ export async function createOrFindCustomer({
   email,
   cardToken,
 }: CustomerPayload) {
-  let customerId;
+  let customer;
   try {
-    let { id } = await createCustomer({ email, cardToken });
-    customerId = id;
+    customer = await createCustomer({ email, cardToken });
+    return customer;
   } catch (e) {
     // check if the customer has cardToken, add cardToken
-    let { id, default_source } = await findCustomer(email);
-    if (!!id && !default_source) {
-      await updateSource(id, cardToken);
+    let sourceCustomer = await findCustomer(email);
+    if (!!sourceCustomer.id && !sourceCustomer.default_source) {
+      return await updateSource(sourceCustomer.id, cardToken);
     }
-    customerId = id;
+    return sourceCustomer;
   }
-
-  return customerId;
 }
 
 export async function startSubscription(customerId: string) {
