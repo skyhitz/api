@@ -16,6 +16,12 @@ export async function updateCustomer({
   });
 }
 
+export async function updateSource(customerId: string, source: string) {
+  return stripe.customers.update(customerId, {
+    source: source,
+  });
+}
+
 export async function createCustomer({ email, cardToken }: CustomerPayload) {
   let customer = await findCustomer(email);
   if (customer && customer.id) {
@@ -24,6 +30,24 @@ export async function createCustomer({ email, cardToken }: CustomerPayload) {
   return stripe.customers.create({
     email: email,
     source: cardToken,
+  });
+}
+
+export async function createCustomerWithEmail(
+  email: string,
+  publicAddress: string,
+  seed: string
+) {
+  let customer = await findCustomer(email);
+  if (customer && customer.id) {
+    throw 'customer already exists';
+  }
+  return stripe.customers.create({
+    email: email,
+    metadata: {
+      publicAddress: publicAddress,
+      seed: seed,
+    },
   });
 }
 
@@ -50,16 +74,18 @@ export async function createOrFindCustomer({
   email,
   cardToken,
 }: CustomerPayload) {
-  let customerId;
+  let customer;
   try {
-    let { id } = await createCustomer({ email, cardToken });
-    customerId = id;
+    customer = await createCustomer({ email, cardToken });
+    return customer;
   } catch (e) {
-    let { id } = await findCustomer(email);
-    customerId = id;
+    // check if the customer has cardToken, add cardToken
+    let sourceCustomer = await findCustomer(email);
+    if (!!sourceCustomer.id && !sourceCustomer.default_source) {
+      return await updateSource(sourceCustomer.id, cardToken);
+    }
+    return sourceCustomer;
   }
-
-  return customerId;
 }
 
 export async function startSubscription(customerId: string) {

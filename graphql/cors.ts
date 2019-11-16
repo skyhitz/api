@@ -11,6 +11,7 @@ if (Config.ENV === 'production') {
     'https://skyhitz.io',
     'https://vice.skyhitz.io',
     'http://localhost:3000',
+    'http://localhost:19006',
     'https://us-central1-skyhitz-161021.cloudfunctions.net',
   ];
 }

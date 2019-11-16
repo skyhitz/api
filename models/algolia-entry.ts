@@ -11,6 +11,8 @@ export interface AlgoliaEntry {
   userUsername: string;
   objectID: string;
   testing: boolean;
+  price: number;
+  forSale: boolean;
 }
 
 export interface AlgoliaUser {

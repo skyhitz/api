@@ -52,6 +52,9 @@ const removeEntry = {
     },
   },
   async resolve(_: any, { id, cloudinaryPublicId }: any, ctx: any) {
+    // TO DO: id and cloudinaryPublicId are the same and should be the same
+    // remove cloudinaryPublicId and replace it with id
+
     const user = await getAuthenticatedUser(ctx);
     let entry = await Database.models.entry.findOne({
       where: { id: id },

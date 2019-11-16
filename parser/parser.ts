@@ -17,7 +17,9 @@ export function entriesToAlgoliaEntries(
       publishedAtTimestamp: entry.publishedAtTimestamp,
       userDisplayName: user.displayName,
       userUsername: user.username,
-      testing: user.testing
+      testing: user.testing,
+      price: entry.price,
+      forSale: entry.forSale,
     };
     return algoliaEntry;
   });
@@ -36,7 +38,7 @@ export function usersToAlgoliaUsers(users: any[]): AlgoliaUser[] {
       publishedAt: user.publishedAt,
       publishedAtTimestamp: user.publishedAtTimestamp,
       objectID: user.id,
-      testing: user.testing
+      testing: user.testing,
     };
     return algoliaUsers;
   });
