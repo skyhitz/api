@@ -22,6 +22,7 @@ import WithdrawToExternalWallet from './withdraw-to-external-wallet';
 import YoutubeUpload from './youtube-upload';
 import UpdatePricing from './update-pricing';
 import BuyEntry from './buy-entry';
+import BuyCredits from './buy-credits';
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
@@ -31,6 +32,7 @@ const Mutation = new GraphQLObjectType({
       addRecentEntrySearch: AddRecentEntrySearch,
       addRecentUserSearch: AddRecentUserSearch,
       buyEntry: BuyEntry,
+      buyCredits: BuyCredits,
       createUserWithEmail: CreateUserWithEmail,
       createEntry: CreateEntry,
       creditEntry: CreditEntry,
