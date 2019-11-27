@@ -28,7 +28,7 @@ export function webhooks(graphQLServer: Express) {
 }
 
 async function processChargeSucceeded(object: any) {
-  const { receipt_email } = object;
+  const { receipt_email, amount } = object;
   const { metadata } = await findCustomer(receipt_email);
   const { publicAddress } = metadata;
   if (!publicAddress) {
@@ -36,8 +36,8 @@ async function processChargeSucceeded(object: any) {
   }
   try {
     console.log('sending subscription tokens', publicAddress);
-    // $7 plan gives the user 7 credits
-    await sendSubscriptionTokens(publicAddress, 7);
+    // $7 plan gives the user 7 credits, amount is in cents
+    await sendSubscriptionTokens(publicAddress, amount / 100);
   } catch (e) {
     console.error('error sending subscription tokens', e);
     throw e;

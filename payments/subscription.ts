@@ -1,4 +1,4 @@
-import { CustomerPayload } from './types';
+import { CustomerPayload, BuyCreditsPayload } from './types';
 import {
   updateCustomer,
   cancelSubscription,
@@ -6,8 +6,63 @@ import {
   startSubscription,
   findCustomer,
   createCustomerWithEmail,
+  chargeCustomer,
 } from './stripe';
 import { createAndFundAccount, mergeAccount, allowTrust } from './stellar';
+
+export async function buyCreditsWithCard(payload: BuyCreditsPayload) {
+  let keyPair: { secret: string; publicAddress: string };
+  let newCustomer;
+  try {
+    newCustomer = await createOrFindCustomer({
+      email: payload.email,
+      cardToken: payload.cardToken,
+    });
+    if (newCustomer.metadata.publicAddress) {
+      await chargeCustomer(newCustomer.id, payload.amount);
+      return;
+    }
+    console.log('created customer');
+  } catch (e) {
+    throw e;
+  }
+
+  try {
+    keyPair = await createAndFundAccount();
+    console.log('created and funded stellar account');
+  } catch (e) {
+    throw e;
+  }
+
+  try {
+    console.log('allowing trust');
+    await allowTrust(keyPair.secret);
+    console.log('allowed trust');
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+
+  try {
+    await updateCustomer({
+      customerId: newCustomer.id,
+      publicAddress: keyPair.publicAddress,
+      seed: keyPair.secret,
+    });
+    console.log('updated stripe customer with stellar info');
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+
+  try {
+    await chargeCustomer(newCustomer.id, payload.amount);
+    console.log('charged customer', newCustomer.id, payload.amount);
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
 
 export async function subscribe(customerPayload: CustomerPayload) {
   let keyPair: { secret: string; publicAddress: string };
