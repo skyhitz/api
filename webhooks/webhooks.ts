@@ -36,8 +36,9 @@ async function processChargeSucceeded(object: any) {
   }
   try {
     console.log('sending subscription tokens', publicAddress);
+    console.log('amount: ', amount);
     // $7 plan gives the user 7 credits, amount is in cents
-    await sendSubscriptionTokens(publicAddress, parseInt(amount) / 100);
+    await sendSubscriptionTokens(publicAddress, amount / 100);
   } catch (e) {
     console.error('error sending subscription tokens', e);
     throw e;
