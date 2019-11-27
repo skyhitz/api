@@ -28,6 +28,7 @@ export function webhooks(graphQLServer: Express) {
 }
 
 async function processChargeSucceeded(object: any) {
+  console.log('event object', object);
   const { receipt_email, amount } = object;
   const { metadata } = await findCustomer(receipt_email);
   const { publicAddress } = metadata;
