@@ -27,7 +27,7 @@ export function webhooks(graphQLServer: Express) {
   stripeWebhook(graphQLServer);
 }
 
-async function processChargeSucceeded(object: any) {
+async function processChargeSucceeded({ object }: any) {
   console.log('event object', object);
   const { receipt_email, amount } = object;
   const { metadata } = await findCustomer(receipt_email);
