@@ -100,6 +100,14 @@ export async function startSubscription(customerId: string) {
   return customerId;
 }
 
+export async function chargeCustomer(customerId: string, amount: number) {
+  await stripe.charges.create({
+    amount: amount * 100,
+    currency: 'usd',
+    customer: customerId,
+  });
+}
+
 export async function cancelSubscription(email: string) {
   let { id, metadata } = await findCustomer(email);
   await stripe.customers.del(id);

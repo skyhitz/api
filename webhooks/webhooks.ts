@@ -27,8 +27,9 @@ export function webhooks(graphQLServer: Express) {
   stripeWebhook(graphQLServer);
 }
 
-async function processChargeSucceeded(object: any) {
-  const { receipt_email } = object;
+async function processChargeSucceeded({ object }: any) {
+  console.log('event object', object);
+  const { receipt_email, amount } = object;
   const { metadata } = await findCustomer(receipt_email);
   const { publicAddress } = metadata;
   if (!publicAddress) {
@@ -36,8 +37,11 @@ async function processChargeSucceeded(object: any) {
   }
   try {
     console.log('sending subscription tokens', publicAddress);
-    // $7 plan gives the user 7 credits
-    await sendSubscriptionTokens(publicAddress, 7);
+    console.log('amount: ', amount);
+    // $7 plan gives the user 7 credits, amount is in cents
+    let transaction = await sendSubscriptionTokens(publicAddress, amount / 100);
+    console.log('transaction: ', transaction);
+    return;
   } catch (e) {
     console.error('error sending subscription tokens', e);
     throw e;
