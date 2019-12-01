@@ -10,6 +10,18 @@ import { getAuthenticatedUser } from '../../auth/logic';
 import { entriesIndex } from '../../algolia/algolia';
 import { checkIfEntryOwnerHasStripeAccount } from '../../payments/subscription';
 
+async function checkPaymentsAccount(forSale: boolean, email: string) {
+  if (forSale) {
+    try {
+      await checkIfEntryOwnerHasStripeAccount(email);
+    } catch (e) {
+      console.log(e);
+    }
+    return;
+  }
+  return;
+}
+
 const createEntry = {
   type: Entry,
   args: {
@@ -70,10 +82,6 @@ const createEntry = {
 
     let createdEntry = await Database.models.entry.create(entry);
 
-    if (entry.forSale) {
-      await checkIfEntryOwnerHasStripeAccount(user.email);
-    }
-
     let entryIndex: any = entry;
     entryIndex.userDisplayName = user.displayName;
     entryIndex.userUsername = user.username;
@@ -82,6 +90,7 @@ const createEntry = {
     [
       await createdEntry.addEntryOwner(user.id),
       await entriesIndex.addObject(entryIndex),
+      await checkPaymentsAccount(entry.forSale, user.email),
     ];
   },
 };
