@@ -34,8 +34,7 @@ export async function accountExists(publicKey: string) {
 }
 
 export async function fundAccount(destinationKey: string) {
-  let validAccount = await accountExists(destinationKey);
-  if (!validAccount) {
+  if (!destinationKey) {
     throw 'Account does not exist';
   }
   let sourceAccount = await stellarServer.loadAccount(sourceKeys.publicKey());
@@ -43,13 +42,12 @@ export async function fundAccount(destinationKey: string) {
     fee: BASE_FEE,
   })
     .addOperation(
-      StellarSdk.Operation.payment({
+      StellarSdk.Operation.createAccount({
         destination: destinationKey,
-        asset: XLM,
-        amount: '1.5',
+        startingBalance: '2',
       })
     )
-    .setTimeout(30)
+    .setTimeout(0)
     .build();
   transaction.sign(sourceKeys);
   return stellarServer.submitTransaction(transaction);
@@ -78,6 +76,9 @@ export async function createAndFundPublicStellarAccount() {
   try {
     await fundAccount(publicAddress);
   } catch (e) {
+    if (e && e.response) {
+      console.log(e.response);
+    }
     throw e;
   }
   return {
@@ -105,7 +106,7 @@ export async function allowTrust(destinationSeed: string) {
         limit: '10000000',
       })
     )
-    .setTimeout(30)
+    .setTimeout(0)
     .build();
 
   transaction.sign(destinationKeys);
@@ -127,7 +128,7 @@ export async function sendSubscriptionTokens(
         amount: amount.toString(),
       })
     )
-    .setTimeout(30)
+    .setTimeout(0)
     .build();
 
   transaction.sign(sourceKeys);
@@ -164,7 +165,7 @@ export async function mergeAccount(accountSeed: string) {
         destination: sourceKeys.publicKey(),
       })
     )
-    .setTimeout(30)
+    .setTimeout(0)
     .build();
 
   transaction.sign(destinationKeys);
@@ -205,7 +206,7 @@ export async function payment(
         amount: amount.toString(),
       })
     )
-    .setTimeout(30)
+    .setTimeout(0)
     .build();
 
   transaction.sign(sourceKeypair);
@@ -244,7 +245,7 @@ export async function withdrawalFromAccount(seed: string, amount: number) {
         amount: amount.toString(),
       })
     )
-    .setTimeout(30)
+    .setTimeout(0)
     .build();
 
   transaction.sign(sourceKeypair);
@@ -267,7 +268,7 @@ export async function payUserInXLM(address: string, amount: number) {
         amount: amount.toFixed(6).toString(),
       })
     )
-    .setTimeout(30)
+    .setTimeout(0)
     .build();
 
   transaction.sign(sourceKeys);

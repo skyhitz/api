@@ -128,6 +128,7 @@ export async function checkIfEntryOwnerHasStripeAccount(email: string) {
     try {
       keyPairNewAcct = await createAndFundAccount();
     } catch (e) {
+      console.log(e);
       throw 'could not create and fund stellar account';
     }
     try {
@@ -141,6 +142,7 @@ export async function checkIfEntryOwnerHasStripeAccount(email: string) {
       ];
       newCustomer = newCus;
     } catch (e) {
+      console.log(e);
       throw 'could not create stripe customer';
     }
     return newCustomer.metadata.publicAddress;
