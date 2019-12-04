@@ -16,6 +16,7 @@ async function checkPaymentsAccount(forSale: boolean, email: string) {
       await checkIfEntryOwnerHasStripeAccount(email);
     } catch (e) {
       console.log(e);
+      throw 'could not check if entry owner has stripe account';
     }
     return;
   }
