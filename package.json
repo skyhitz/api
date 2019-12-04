@@ -5,7 +5,8 @@
   "author": "Alejo Mendoza",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development ts-node --inspect -F ./graphql/server.ts"
+    "dev": "NODE_ENV=development ts-node --inspect -F ./graphql/server.ts",
+    "prod": "NODE_ENV=production ts-node --inspect -F ./graphql/server.ts"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.1.4",

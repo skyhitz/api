@@ -18,15 +18,24 @@
       "cwd": "${workspaceRoot}"
     },
     {
-      "name": "Current TS File",
+      "name": "Current TS File Production Env",
       "type": "node",
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/ts-node/dist/_bin.js",
-      "args": [
-        "${relativeFile}"
-      ],
+      "args": ["${relativeFile}"],
       "cwd": "${workspaceRoot}",
-      "protocol": "inspector"
+      "protocol": "inspector",
+      "envFile": "${workspaceFolder}/.env.production"
+    },
+    {
+      "name": "Current TS File Staging Env",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/ts-node/dist/_bin.js",
+      "args": ["${relativeFile}"],
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "envFile": "${workspaceFolder}/.env.staging"
     }
   ]
 }
