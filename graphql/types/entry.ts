@@ -54,6 +54,15 @@ const Entry: GraphQLObjectType = new GraphQLObjectType({
           return entry.price;
         },
       },
+      likeCount: {
+        type: GraphQLInt,
+        resolve(entry: any) {
+          if (entry.likeCount) {
+            return entry.likeCount;
+          }
+          return 0;
+        },
+      },
       artist: {
         type: GraphQLString,
         resolve(entry: any) {
