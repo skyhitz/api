@@ -14,6 +14,7 @@ import UserPlaylists from './user-playlists';
 import PaymentsInfo from './payments-info';
 import HasCreditFromUser from './has-credit-from-user';
 import CanCreditEntry from './can-credit-entry';
+import TopChart from './top-chart';
 
 const Query = new GraphQLObjectType({
   name: 'Query',
@@ -25,6 +26,7 @@ const Query = new GraphQLObjectType({
       recentUserSearches: RecentUserSearches,
       entries: Entries,
       topEntrySearches: TopEntrySearches,
+      topChart: TopChart,
       recentEntrySearches: RecentEntrySearches,
       recentlyAdded: RecentlyAdded,
       authenticatedUser: AuthenticatedUser,
