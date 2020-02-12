@@ -16,7 +16,11 @@ const TopChart = {
        inner join entries on entries.id = "entryLikes"."entryId"
        group by "entryId", entries.id
        order by "likeCount" desc limit 40;`,
-      { type: QueryTypes.SELECT }
+      {
+        type: QueryTypes.SELECT,
+        model: Database.models.entry,
+        mapToModel: true,
+      }
     );
   },
 };
