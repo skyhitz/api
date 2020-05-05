@@ -8,23 +8,11 @@ const RecentlyAdded = {
   async resolve(root: any, args: any, ctx: any) {
     await getAuthenticatedUser(ctx);
 
-    let entries = await Database.models.entry
-      .findAll({
-        limit: 25,
-        order: [['publishedAt', 'DESC']],
-        include: [{ model: Database.models.user, as: 'EntryOwner' }],
-      })
-      .filter((entry: any) => {
-        if (
-          entry.EntryOwner &&
-          entry.EntryOwner[0] &&
-          entry.EntryOwner[0].dataValues
-        ) {
-          let entryOwner = entry.EntryOwner[0].dataValues;
-          return !entryOwner.testing;
-        }
-        return false;
-      });
+    let entries = await Database.models.entry.findAll({
+      limit: 25,
+      order: [['publishedAt', 'DESC']],
+      include: [{ model: Database.models.user, as: 'EntryOwner' }],
+    });
     return entries;
   },
 };
