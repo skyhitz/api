@@ -69,7 +69,7 @@ const setupGraphQLServer = () => {
 const graphQLServer = setupGraphQLServer();
 
 if (Config.ENV === 'development') {
-  graphQLServer.listen(3000);
+  graphQLServer.listen(4000);
 }
 
 export const graphql = onRequest(graphQLServer);

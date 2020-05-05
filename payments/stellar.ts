@@ -1,13 +1,7 @@
 import fetch from 'node-fetch';
 import StellarSdkLibrary = require('stellar-sdk');
 import { Config } from '../config';
-export const BASE_FEE = 102; // stroops
-
-if (Config.ENV === 'production') {
-  StellarSdkLibrary.Network.usePublicNetwork();
-} else {
-  StellarSdkLibrary.Network.useTestNetwork();
-}
+export const BASE_FEE = '102'; // stroops
 
 export const stellarServer = new StellarSdkLibrary.Server(Config.HORIZON_URL);
 export const StellarSdk = StellarSdkLibrary;
@@ -223,7 +217,7 @@ export async function getUSDPrice() {
 export async function convertUSDtoXLM(USDAmount: number) {
   if (Config.ENV === 'production') {
     const currentPrice = await getUSDPrice();
-    const XLMAmount = USDAmount * currentPrice;
+    const XLMAmount = USDAmount * parseInt(currentPrice);
     return XLMAmount;
   }
   // using 12.5 cents as reference
