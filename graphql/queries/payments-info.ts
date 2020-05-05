@@ -19,6 +19,12 @@ const PaymentsInfo = {
 
     try {
       customer = await findCustomer(user.email);
+      if (!customer) {
+        return {
+          subscribed: false,
+          credits: 0,
+        };
+      }
       let credits = await accountCredits(customer.metadata.publicAddress);
 
       let subscriptions = customer.subscriptions.data;
