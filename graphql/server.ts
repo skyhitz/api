@@ -10,18 +10,40 @@ const compression = require('compression');
 import { webhooks } from '../webhooks/webhooks';
 import { corsOptions } from './cors';
 let cors = require('cors');
+const cache = require('memory-cache');
+let cacheInstance = new cache.Cache();
 
 const buildOptions: any = async (req: any) => {
-  let context = {
-    user: req.user
-      ? Database.models.user.findOne({
-          where: { id: req.user.id, version: req.user.version },
-        })
-      : Promise.resolve(null),
-  };
+  if (req.user) {
+    // check cache instance
+    let cachedUser = cacheInstance.get(req.user.id);
+    if (cachedUser) {
+      return {
+        schema: Schema,
+        context: {
+          user: Promise.resolve(cachedUser),
+        },
+      };
+    }
+    return {
+      schema: Schema,
+      context: {
+        user: Database.models.user
+          .findOne({
+            where: { id: req.user.id, version: req.user.version },
+          })
+          .then((user) => {
+            cacheInstance.put(req.user.id, user);
+            return user;
+          }),
+      },
+    };
+  }
   return {
     schema: Schema,
-    context: context,
+    context: {
+      user: Promise.resolve(null),
+    },
   };
 };
 

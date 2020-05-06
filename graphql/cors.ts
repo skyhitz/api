@@ -12,13 +12,14 @@ if (Config.ENV === 'production') {
     'https://skyhitz.io',
     'https://vice.skyhitz.io',
     'http://localhost:3000',
+    'http://localhost:4000',
     'http://localhost:19006',
     'https://us-central1-skyhitz-161021.cloudfunctions.net',
   ];
 }
 
 export let corsOptions = {
-  origin: function(origin: any, callback: any) {
+  origin: function (origin: any, callback: any) {
     // allow requests with no origin like mobile apps or curl requests
     if (!origin) return callback(null, true);
 
