@@ -24,7 +24,7 @@
     "@types/sequelize": "^4.0.73",
     "@types/stripe": "^5.0.19",
     "algoliasearch": "^3.32.0",
-    "apollo-server-express": "^1.1.2",
+    "apollo-server-express": "^2.14.2",
     "async": "^2.5.0",
     "bcrypt": "3.0.0",
     "bluebird": "^3.5.0",
